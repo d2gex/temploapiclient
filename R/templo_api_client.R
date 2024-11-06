@@ -185,7 +185,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
       logger::log_info("---> Converting results to dataframe...")
       result_formatter <- ListsToDataFrame$new()
       ret <- result_formatter$tagged_individuals(ret$response, tagged_individual_fields)
-      sensor_types <- get_sensor_types()
+      sensor_types <- self$get_sensor_types()
       ret <- dplyr::left_join(ret, sensor_types, by = "sensor_types_id") %>%
         dplyr::select(-sensor_types_id)
     }
