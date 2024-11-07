@@ -51,3 +51,4 @@ rsconnect/
 # just remporarily
 R/test_api
 inst/doc
+.env
