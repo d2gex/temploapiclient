@@ -20,11 +20,13 @@ iim
 IIMApiClient
 json
 jsonlite
+knitr
 lubridate
 magrittr
 mit
 NestedListBuilder
 purrr
+rmarkdown
 Roxygen
 RoxygenNote
 sensortypes
@@ -37,4 +39,5 @@ temploapiclient
 testthat
 tidyselect
 validator
+VignetteBuilder
 ymd

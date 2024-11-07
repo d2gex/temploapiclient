@@ -50,3 +50,4 @@ rsconnect/
 .idea
 # just remporarily
 R/test_api
+inst/doc

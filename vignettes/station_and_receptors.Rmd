@@ -1,0 +1,21 @@
+---
+title: "station_and_receptors"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{station_and_receptors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+author: d2g
+date: 06-11-2024
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(temploapiclient)
+```
