@@ -2,7 +2,6 @@
 
 export("%>%")
 export(FieldValidation)
-export(HttpClientJsonBase)
 export(IIMApiClient)
 export(ListsToDataFrame)
 export(NestedListBuilder)

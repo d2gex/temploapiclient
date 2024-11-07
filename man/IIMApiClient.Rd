@@ -10,7 +10,6 @@ Provides the end-to-end queries required to update all details about the live ac
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-IIMApiClient-new}{\code{IIMApiClient$new()}}
-\item \href{#method-IIMApiClient-add_sensor_type}{\code{IIMApiClient$add_sensor_type()}}
 \item \href{#method-IIMApiClient-post_data_to_api}{\code{IIMApiClient$post_data_to_api()}}
 \item \href{#method-IIMApiClient-get_from_api}{\code{IIMApiClient$get_from_api()}}
 \item \href{#method-IIMApiClient-get_from_api_as_dataframe}{\code{IIMApiClient$get_from_api_as_dataframe()}}
@@ -25,25 +24,6 @@ Provides the end-to-end queries required to update all details about the live ac
 \if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$new(api_url)}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-IIMApiClient-add_sensor_type"></a>}}
-\if{latex}{\out{\hypertarget{method-IIMApiClient-add_sensor_type}{}}}
-\subsection{Method \code{add_sensor_type()}}{
-Add a sensor type to the database
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$add_sensor_type(df, end_point = "sensortypes/")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{df}}{single-column dataframe with as many variables as required, i.e., DEPTH, TEMPERATURE.}
-
-\item{\code{end_point}}{string with the name of the end point being queried. Default "sensortypes/"}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-IIMApiClient-post_data_to_api"></a>}}

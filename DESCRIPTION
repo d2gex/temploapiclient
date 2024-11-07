@@ -18,6 +18,7 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     dplyr,
+    httpeasyrest,
     httr2,
     jsonlite,
     logger,
@@ -26,3 +27,5 @@ Imports:
     R6,
     stringr,
     tidyselect
+Remotes:
+    d2gex/httpeasyrest
