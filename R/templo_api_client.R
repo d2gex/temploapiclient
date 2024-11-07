@@ -164,14 +164,14 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
       return(FALSE)
     }
     logger::log_info("--->Finished")
-    return(ret$response)
+    return(ret$http_resp)
   },
   get_sensor_types = function(end_point = "sensortypes/") {
     logger::log_info("Fetching all sensor types from the api... This may take a few seconds")
     iim_api <- IIMApiClient$new(self$api_url)
     ret <- iim_api$get_from_api_as_dataframe(end_point)
     if (!isFALSE(ret)) {
-      ret <- ret$response %>%
+      ret <- ret$http_resp %>%
         dplyr::rename(c(sensor_types_id = "id", sensor_type = "type_name"))
     }
     logger::log_info("--->Finished")
@@ -184,7 +184,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     if (!isFALSE(ret)) {
       logger::log_info("---> Converting results to dataframe...")
       result_formatter <- ListsToDataFrame$new()
-      ret <- result_formatter$tagged_individuals(ret$response, tagged_individual_fields)
+      ret <- result_formatter$tagged_individuals(ret$http_resp, tagged_individual_fields)
       sensor_types <- self$get_sensor_types()
       ret <- dplyr::left_join(ret, sensor_types, by = "sensor_types_id") %>%
         dplyr::select(-sensor_types_id)
@@ -221,17 +221,26 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
       to_date = to_date
     ))
     if (!isFALSE(ret)) {
-      ret <- ret$response
+      ret <- ret$http_resp
     }
     logger::log_info("--->Finished")
     return(ret)
   },
-  get_dataframe_end_point = function(api_url, end_point, parameters = NULL) {
+
+  # @formatter:off
+  #' General method to get data from the API in a dataframe format.
+  #'
+  #' @param end_point string with the name of the end point being queried.
+  #' @param parameters a named list with potential parameters to pass on to the API query. Default is NULL
+  #' @returns a dataframe with the sought information.
+  #' @export
+  # @formatter:on
+  get_dataframe_end_point = function(end_point, parameters = NULL) {
     logger::log_info(paste("Fetching data from api... This may take a few seconds"))
     iim_api <- IIMApiClient$new(self$api_url)
     ret <- iim_api$get_from_api_as_dataframe(end_point, parameters)
     if (!isFALSE(ret)) {
-      ret <- ret$response
+      ret <- ret$http_resp
     }
     logger::log_info("--->Finished")
     return(ret)
