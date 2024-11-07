@@ -26,6 +26,7 @@ magrittr
 mit
 NestedListBuilder
 purrr
+renv
 rmarkdown
 Roxygen
 RoxygenNote
@@ -33,6 +34,7 @@ sensortypes
 stringr
 templeapiclient
 TEMPLO
+templo
 TEMPLO's
 TemploApi
 temploapiclient

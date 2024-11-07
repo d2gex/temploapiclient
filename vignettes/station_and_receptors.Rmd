@@ -16,6 +16,48 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+# Setup
+ This vignette will create a virtual environment in the parent folder of the working directory and install
+ `temploapiclient`. The name of the renv project will be `.temploaplicient_tmp`  - you can name is as you like by
+ modifying the code below.
+Alternatively you can skip this code and install `temploapiclient` system-wide by using `install.packages`.
+
 ```{r setup}
-library(temploapiclient)
+project_parent_path <- dirname(dirname(getwd())) #
+renv_project_path <- file.path(project_parent_path, ".temploaplicient_tmp")
+r_environ <- file.path(project_parent_path, ".temploapiclient_env")
+if (!file.exists(renv_project_path)) {
+  renv::init(project = renv_project_path)
+}
+if (!require("temploapiclient", quietly = TRUE)) {
+  renv::install("d2gex/temploapiclient",
+    prompt = FALSE,
+    project = renv_project_path
+  )
+}
+```
+# API credentials reading
+It gets the base url where the API is hosted from the hard-drive to avoid pasting here the URL and
+instantiate the object templo_client.
+```{r}
+readRenviron(r_environ)
+api_base_url <- Sys.getenv("API_BASE_URL") #
+templo_client <- temploapiclient::TemploApiClient$new(api_base_url)
+```
+# Creating stations, receptors and linking both
+Stations and receptors have a 1:N relationship where one station could be associated to multiple receptors. In order to build such relationship the following steps need to be taken in chronological order:
+
+1. Add a station if it is not already created.
+2. Add as many receptors, one by one, as required.
+3. Link the station with all its potential associated receptors.
+4. Repeat 1 to 4 for as many stations as required.
+
+## Creating stations
+```{r}
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
+  name = "Cies 2",
+  description = "Western area of cies"
+))
+ret
 ```

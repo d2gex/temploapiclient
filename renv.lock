@@ -247,14 +247,14 @@
       "RemoteUsername": "d2gex",
       "RemoteRepo": "httpeasyrest",
       "RemoteRef": "main",
-      "RemoteSha": "18f6c25e2a22339c18ee911c9b605cb881de8ad6",
+      "RemoteSha": "4b64e1064859bf6bcb721fdc8a56089682c21928",
       "Requirements": [
         "R6",
         "dplyr",
         "httr2",
         "logger"
       ],
-      "Hash": "2c737e13daf38b313aa83dffef08f8ac"
+      "Hash": "81a50c5315f5c4663713186c25242531"
     },
     "httr2": {
       "Package": "httr2",
