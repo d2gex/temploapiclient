@@ -29,27 +29,24 @@ renv_project_path <- file.path(project_parent_path, ".temploaplicient_tmp")
 r_environ <- file.path(project_parent_path, ".temploapiclient_env")
 if (!file.exists(renv_project_path)) {
   renv::init(project = renv_project_path)
-  renv::install(c("assertr", "dplyr", "stringi"),
-    prompt = FALSE,
-    project = renv_project_path
+  renv::install(c("assertr", "dplyr", "stringi", "d2gex/temploapiclient"), # install vignette's requirements
+    prompt = FALSE, # avoid interaction with users
+    verbose = FALSE, # avoid printing out the the install outputs unless something fails
+    project = renv_project_path # Force to use defined path to avoid clashing with the R package's renv
   )
 } else {
-  renv::activate(project = renv_project_path)
+  renv::load(project = renv_project_path, quiet = TRUE) # Load created renv environment
 }
-if (!require("temploapiclient", quietly = TRUE)) {
-  renv::install("d2gex/temploapiclient",
-    prompt = FALSE,
-    project = renv_project_path
-  )
-}
-library("magrittr")
+library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # API credentials reading
-It gets the base url where the API is hosted from the hard-drive to avoid pasting here the URL and
-instantiate the object templo_client.
-```{r}
+Let's get the base url where the API is hosted from the hard-drive to avoid pasting it here.
+```{r read_environment}
 readRenviron(r_environ)
 api_base_url <- Sys.getenv("API_BASE_URL") #
+```
+Then let's instantiate the client to query the TEMPLO api
+```{r instantiate_client}
 templo_client <- temploapiclient::TemploApiClient$new(api_base_url)
 ```
 # Creating stations, receptors and linking both
@@ -64,14 +61,14 @@ Stations and receptors have a 1:N relationship where one station could be associ
 Create a new receptor and give it the name "Cies 2". If something unexpected happens, an error will be outputted. The
 code is commented out because a record can only be inserted once. Tough not shown here, when successful, the api call
 return the record just inserted with a new generated `id`.
-```{r}
+```{r station_insertion}
 # ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
 #   name = "Cies 2",
 #   description = "Western area of cies"
 # ))
 ```
 Ensure that such receptor was sent and stored in the database by retrieving it from the API.
-```{r}
+```{r station_checkup}
 api_data <- templo_client$get_dataframe_end_point(end_point = "stations/")
 api_data %>%
   dplyr::filter(name == "Cies 2") %>%
@@ -80,7 +77,7 @@ api_data %>%
 ## Creating receptors
 Receptors, besides a name, requires a unique string that identify them and that is stored in `serial_id`. As for
 receptors, a new generated `id` is returned when successful. Otherwise, an error is printed.
-```{r}
+```{r receptor_insertion}
 # serial_id <- stringi::stri_rand_strings(1, 10)
 # ret <- templo_client$add_single_record_and_fetch_id(end_point = "receptors/", data = list(
 #   name = "Buoy C21",
@@ -89,32 +86,76 @@ receptors, a new generated `id` is returned when successful. Otherwise, an error
 # ))
 ```
 Ensure that such station was sent and stored in the database by retrieving it from the API.
-```{r}
+```{r receptor_checkup}
 api_data <- templo_client$get_dataframe_end_point(end_point = "receptors/")
 api_data %>%
   dplyr::filter(name == "Buoy C21") %>%
   assertr::verify(nrow(.) == 1)
 ```
 ## Associating receptors to stations
-Once we have created receptors and stations separately, we may associate them by using a table that relate the two and
+Once we have created receptors and stations separately, we may associate them by using a table that relate the two,
 represented by the endpoint `stations_receptors`. Notice that you've got to do that by picking the ids returned from
 earlier calls.
 
-```{r}
-data <- list(
-  stations_id = 198, # station that we just created by the name of "Cies 2"
-  receptors_id = 9, # receptor stored as "Buoy C21"
-  is_active = TRUE, # it indicates the receptor is active
-  latitude = 42.2134,
-  longitude = -8.8987,
-  deployment_date = "2024-11-07 08:25:00" # Notice that dates are in yms_hms format
-)
-ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations_receptors/", data = data)
+```{r receptor_station_association}
+# data <- list(
+#   stations_id = 198, # station that we just created by the name of "Cies 2"
+#   receptors_id = 9, # receptor stored as "Buoy C21"
+#   is_active = TRUE, # it indicates the receptor is active
+#   latitude = 42.2134,
+#   longitude = -8.8987,
+#   deployment_date = "2024-11-07 08:25:00" # Notice that dates are in yms_hms format
+# )
+# ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations_receptors/", data = data)
 ```
 Again, and for demonstrative purposes, we ensure that the association was successfully implemented by querying the API.
-```{r}
+```{r receptor_association_checkup}
 api_data <- templo_client$get_dataframe_end_point(end_point = "stations_receptors/")
 api_data %>%
   dplyr::filter(stations_id == 198 & receptors_id == 9) %>%
   assertr::verify(nrow(.) == 1)
+```
+## Errors while sending
+A record can only exist once in a relational database so if trying twice an error will be prompted.
+```{r duplicate_key_error}
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
+  name = "Cies 2", # name is an unique field and already exists in the database
+  description = "Western area of cies"
+))
+```
+... Or you could miss a required field such `name` and get a "field required" error
+```{r required_key_error}
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
+  description = "Western area of cies"
+))
+```
+## Deleting a record
+Let's create a new station and then delete it right away.
+```{r insert_record_afresh}
+new_record <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
+  name = "Cies 3",
+  description = "Eastern area of cies"
+))
+new_record
+```
+Let's ensure that the record was inserted in the database.
+```{r insert_record_checkup}
+api_data <- templo_client$get_dataframe_end_point(end_point = "stations/")
+api_data %>%
+  dplyr::filter(name == "Cies 3") %>%
+  assertr::verify(nrow(.) == 1)
+```
+Now let's deleted...
+```{r delete_record}
+ret <- templo_client$delete_single_record(end_point = "stations/", data = list(
+  id = new_record$id
+))
+ret
+```
+... And once again, ensure that such record no longer exists
+```{r delete_record_checkup}
+api_data <- templo_client$get_dataframe_end_point(end_point = "stations/")
+api_data %>%
+  dplyr::filter(name == "Cies 3") %>%
+  assertr::verify(nrow(.) == 0)
 ```
