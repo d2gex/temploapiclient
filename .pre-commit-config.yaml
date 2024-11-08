@@ -28,6 +28,12 @@ repos:
           .*\.Rds|
           .*\.Rproj|
           .*\.sh|
+          .*\.html|
+          .*\.css|
+          .*\.js|
+          .*\.json|
+          .*\.xml|
+          .*\.ttf|
           (.*/|)\.gitignore|
           (.*/|)\.gitlab-ci\.yml|
           (.*/|)\.lintr|
@@ -42,8 +48,8 @@ repos:
           (.*/|)renv\.lock|
           (.*/|)WORDLIST|
           \.github/workflows/.*|
-          data/.*|,
-          ^docs/
+          data/.*|
+          docs/\.*|
           )$
     -   id: lintr
     -   id: readme-rmd-rendered
