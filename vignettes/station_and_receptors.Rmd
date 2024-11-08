@@ -159,3 +159,15 @@ api_data %>%
   dplyr::filter(name == "Cies 3") %>%
   assertr::verify(nrow(.) == 0)
 ```
+# Fetching environmental readings
+Deployed receptors are equipped with sensors that measure oceanographic variables such as temperature, pressure, etc... Such readings can be obtained from the API too. Readings are generate with a very fine time resolution so it is advised to fetch two o three days worth of data at the time. Otherwise the API call may time out and produce no results or whatsoever.
+
+```{r available_environmental_variables}
+api_data <- templo_client$get_environmental_readings(from_date = "2024-10-10", to_date = "2024-10-12")
+head(api_data)
+```
+You could hit an interval of time where no data was produced so an empty dataset will be returned instead.
+```{r unavailable_environmental_variables}
+api_data <- templo_client$get_environmental_readings(from_date = "2024-01-01", to_date = "2024-02-02")
+api_data
+```
