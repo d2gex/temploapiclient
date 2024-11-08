@@ -26,6 +26,23 @@ IIMApiClient <- R6::R6Class("IIMApiClient", public = list( # nolint
   },
   # @formatter:off
   #' @description
+  #' Delete a single record from the database through the API
+  #'
+  #' @param end_point string with the name of the end point being queried. Default "tags_with_sensors/"
+  #' @param obj a flat list with the ids or any unique field that identifies the record to be erased
+  #' @export
+  # @formatter:on
+  delete_data_from_api = function(obj, end_point) {
+    http_client <- httpeasyrest::HttpRestClient$new(self$api_url, end_point)
+    ret <- http_client$delete_object(obj)
+    if (!ret$success) {
+      private$print_error_context(ret$errors)
+      return(FALSE)
+    }
+    return(ret)
+  },
+  # @formatter:off
+  #' @description
   #' Make a request to the API and return the data in a json object.
   #'
   #' @param end_point string with the name of the end point being queried. Default "tags_with_sensors/"
