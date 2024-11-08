@@ -18,7 +18,8 @@ Suggests:
     rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: 
+Imports:
+    assertr,
     dplyr,
     httpeasyrest,
     httr2,
