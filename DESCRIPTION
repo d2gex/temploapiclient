@@ -27,7 +27,6 @@ Imports:
     lubridate,
     purrr,
     R6,
-    renv (>= 1.0.5),
     stringr,
     tidyselect
 Remotes:
