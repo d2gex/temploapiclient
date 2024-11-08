@@ -5,6 +5,10 @@ repos:
     rev: v0.4.2
     hooks:
     -   id: style-files
+        exclude: >
+          (?x)^(
+          docs/.*|
+          )$
         args: [--style_pkg=styler, --style_fun=tidyverse_style]
     #-   id: roxygenize
     # codemeta must be above use-tidy-description when both are used
@@ -38,7 +42,8 @@ repos:
           (.*/|)renv\.lock|
           (.*/|)WORDLIST|
           \.github/workflows/.*|
-          data/.*|
+          data/.*|,
+          docs/.*|
           )$
     -   id: lintr
     -   id: readme-rmd-rendered
@@ -49,7 +54,8 @@ repos:
     -   id: deps-in-desc
         exclude: >
           (?x)^(
-          vignettes/.*
+          vignettes/.*|,
+          docs/.*|
           )$
     #-   id: pkgdown
 -   repo: https://github.com/pre-commit/pre-commit-hooks
