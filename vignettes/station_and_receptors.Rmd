@@ -164,7 +164,32 @@ Deployed receptors are equipped with sensors that measure oceanographic variable
 
 ```{r available_environmental_variables}
 api_data <- templo_client$get_environmental_readings(from_date = "2024-10-10", to_date = "2024-10-12")
-head(api_data)
+head(api_data) %>%
+  dplyr::select(
+    environmental_variable_name,
+    latitude,
+    longitude,
+    reading_time,
+    receptor_name,
+    station_name,
+    value
+  ) %>%
+  dplyr::rename(c(
+    variable = environmental_variable_name,
+    receptor = receptor_name,
+    station = station_name,
+    lat = latitude,
+    lon = longitude
+  )) %>%
+  dplyr::select(
+    station,
+    receptor,
+    lat,
+    lon,
+    variable,
+    reading_time,
+    value
+  )
 ```
 You could hit an interval of time where no data was produced so an empty dataset will be returned instead.
 ```{r unavailable_environmental_variables}
