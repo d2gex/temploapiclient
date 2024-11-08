@@ -34,7 +34,7 @@ Alternatively you can skip this code and install `temploapiclient` system-wide b
 # } else {
 #   renv::load(project = ".vignettes_renv", quiet = TRUE) # Load created renv environment
 # }
-renv::install(c("assertr", "d2gex/temploapiclient"))
+library("temploapiclient")
 library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # API credentials reading
@@ -45,7 +45,7 @@ api_base_url <- Sys.getenv("API_BASE_URL") #
 ```
 Then let's instantiate the client to query the TEMPLO api
 ```{r instantiate_client}
-templo_client <- temploapiclient::TemploApiClient$new(api_base_url)
+templo_client <- TemploApiClient$new(api_base_url)
 ```
 # Creating stations, receptors and linking both
 Stations and receptors have a 1:N relationship where one station could be associated to multiple receptors. In order to build such relationship the following steps need to be taken in chronological order:
