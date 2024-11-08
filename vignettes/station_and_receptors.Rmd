@@ -24,25 +24,22 @@ knitr::opts_chunk$set(
 Alternatively you can skip this code and install `temploapiclient` system-wide by using `install.packages`.
 
 ```{r setup}
-project_parent_path <- dirname(dirname(getwd())) #
-renv_project_path <- file.path(project_parent_path, ".temploaplicient_tmp")
-r_environ <- file.path(project_parent_path, ".temploapiclient_env")
-if (!file.exists(renv_project_path)) {
-  renv::init(project = renv_project_path)
+if (!file.exists(".vignettes_renv")) {
+  renv::init(project = ".vignettes_renv")
   renv::install(c("assertr", "dplyr", "stringi", "d2gex/temploapiclient"), # install vignette's requirements
     prompt = FALSE, # avoid interaction with users
     verbose = FALSE, # avoid printing out the the install outputs unless something fails
-    project = renv_project_path # Force to use defined path to avoid clashing with the R package's renv
+    project = ".vignettes_renv" # Force to use defined path to avoid clashing with the R package's renv
   )
 } else {
-  renv::load(project = renv_project_path, quiet = TRUE) # Load created renv environment
+  renv::load(project = ".vignettes_renv", quiet = TRUE) # Load created renv environment
 }
 library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # API credentials reading
 Let's get the base url where the API is hosted from the hard-drive to avoid pasting it here.
 ```{r read_environment}
-readRenviron(r_environ)
+readRenviron(".env")
 api_base_url <- Sys.getenv("API_BASE_URL") #
 ```
 Then let's instantiate the client to query the TEMPLO api
