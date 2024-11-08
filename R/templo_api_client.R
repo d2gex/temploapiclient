@@ -202,8 +202,17 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     logger::log_info("--->Finished")
     return(ret)
   },
-  get_environmental_readings = function(api_url,
-                                        end_point = "environmental_readings/data_exports/",
+  # @formatter:off
+  #' @description
+  #' Get environmental data from the API that were emitted by receptors
+  #'
+  #' @param end_point string with the name of the end point being queried.
+  #' @param from_date a yms format string start date
+  #' @param to_date a yms format string end_date
+  #' @returns a dataframe with the sought information.
+  #' @export
+  # @formatter:on
+  get_environmental_readings = function(end_point = "environmental_readings/data_exports/",
                                         from_date,
                                         to_date) {
     df <- data.frame(

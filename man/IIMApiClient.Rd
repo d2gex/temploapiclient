@@ -11,6 +11,7 @@ Provides the end-to-end queries required to update all details about the live ac
 \itemize{
 \item \href{#method-IIMApiClient-new}{\code{IIMApiClient$new()}}
 \item \href{#method-IIMApiClient-post_data_to_api}{\code{IIMApiClient$post_data_to_api()}}
+\item \href{#method-IIMApiClient-delete_data_from_api}{\code{IIMApiClient$delete_data_from_api()}}
 \item \href{#method-IIMApiClient-get_from_api}{\code{IIMApiClient$get_from_api()}}
 \item \href{#method-IIMApiClient-get_from_api_as_dataframe}{\code{IIMApiClient$get_from_api_as_dataframe()}}
 \item \href{#method-IIMApiClient-clone}{\code{IIMApiClient$clone()}}
@@ -38,6 +39,25 @@ Post a nested list to the database through an API.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{obj}}{a nested list resulting from applying \link{NestedListBuilder}}
+
+\item{\code{end_point}}{string with the name of the end point being queried. Default "tags_with_sensors/"}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-IIMApiClient-delete_data_from_api"></a>}}
+\if{latex}{\out{\hypertarget{method-IIMApiClient-delete_data_from_api}{}}}
+\subsection{Method \code{delete_data_from_api()}}{
+Delete a single record from the database through the API
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$delete_data_from_api(obj, end_point)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{obj}}{a flat list with the ids or any unique field that identifies the record to be erased}
 
 \item{\code{end_point}}{string with the name of the end point being queried. Default "tags_with_sensors/"}
 }
