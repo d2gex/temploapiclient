@@ -40,7 +40,6 @@ vignettes/*.pdf
 .Renviron
 
 # pkgdown site
-docs/
 
 # translation temp files
 po/*~
@@ -52,4 +51,3 @@ rsconnect/
 R/test_api
 inst/doc
 .env
-docs
