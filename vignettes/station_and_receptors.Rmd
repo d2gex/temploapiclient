@@ -24,16 +24,16 @@ knitr::opts_chunk$set(
 Alternatively you can skip this code and install `temploapiclient` system-wide by using `install.packages`.
 
 ```{r setup}
-# if (!file.exists(".vignettes_renv")) {
-#   renv::init(project = ".vignettes_renv")
-#   renv::install(c("assertr", "dplyr", "stringi", "d2gex/temploapiclient"), # install vignette's requirements
-#     prompt = FALSE, # avoid interaction with users
-#     verbose = FALSE, # avoid printing out the the install outputs unless something fails
-#     project = ".vignettes_renv" # Force to use defined path to avoid clashing with the R package's renv
-#   )
-# } else {
-#   renv::load(project = ".vignettes_renv", quiet = TRUE) # Load created renv environment
-# }
+if (!file.exists(".vignettes_renv")) {
+  renv::init(project = ".vignettes_renv")
+  renv::install(c("assertr", "dplyr", "stringi", "d2gex/temploapiclient"), # install vignette's requirements
+    prompt = FALSE, # avoid interaction with users
+    verbose = FALSE, # avoid printing out the the install outputs unless something fails
+    project = ".vignettes_renv" # Force to use defined path to avoid clashing with the R package's renv
+  )
+} else {
+  renv::load(project = ".vignettes_renv", quiet = TRUE) # Load created renv environment
+}
 library("temploapiclient")
 library("magrittr") # Make '%>%' available throughout the vignette
 ```
