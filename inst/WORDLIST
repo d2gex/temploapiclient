@@ -11,6 +11,7 @@ dgarcia
 dplyr
 FieldValidatio
 gex
+github
 gpl
 hms
 htteasyrest
@@ -20,6 +21,7 @@ httpeasyrest
 httr
 iim
 IIMApiClient
+io
 json
 jsonlite
 knitr

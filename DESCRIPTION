@@ -32,3 +32,4 @@ Imports:
 Remotes:
     d2gex/httpeasyrest
 VignetteBuilder: knitr
+URL: https://d2gex.github.io/temploapiclient/
