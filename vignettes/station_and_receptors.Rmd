@@ -18,32 +18,18 @@ knitr::opts_chunk$set(
 
 
 # Setup
- This vignette will create a virtual environment in the parent folder of the working directory and install
- `temploapiclient`. The name of the renv project will be `.temploaplicient_tmp`  - you can name is as you like by
- modifying the code below.
-Alternatively you can skip this code and install `temploapiclient` system-wide by using `install.packages`.
+Ensure that the `temploapiclient` package is installed and available to this vignette. You can do that by calling `pkgdown::build_site()`, which will also generate the `docs` folder or by simply calling `install.packages()`.
 
 ```{r setup}
-project_parent_path <- dirname(dirname(getwd())) #
-renv_project_path <- file.path(project_parent_path, ".temploaplicient_tmp")
-r_environ <- file.path(project_parent_path, ".temploapiclient_env")
-if (!file.exists(renv_project_path)) {
-  renv::init(project = renv_project_path)
-  renv::install(c("assertr", "dplyr", "stringi", "d2gex/temploapiclient"), # install vignette's requirements
-    prompt = FALSE, # avoid interaction with users
-    verbose = FALSE, # avoid printing out the the install outputs unless something fails
-    project = renv_project_path # Force to use defined path to avoid clashing with the R package's renv
-  )
-} else {
-  renv::load(project = renv_project_path, quiet = TRUE) # Load created renv environment
-}
+project_folder <- dirname(getwd())
+path_to_env <- file.path(project_folder, ".env")
 library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # API credentials reading
 Let's get the base url where the API is hosted from the hard-drive to avoid pasting it here.
 ```{r read_environment}
-readRenviron(r_environ)
-api_base_url <- Sys.getenv("API_BASE_URL") #
+readRenviron(path_to_env)
+api_base_url <- Sys.getenv("API_BASE_URL")
 ```
 Then let's instantiate the client to query the TEMPLO api
 ```{r instantiate_client}
@@ -60,12 +46,13 @@ Stations and receptors have a 1:N relationship where one station could be associ
 ## Creating stations
 Create a new receptor and give it the name "Cies 2". If something unexpected happens, an error will be outputted. The
 code is commented out because a record can only be inserted once. Tough not shown here, when successful, the api call
-return the record just inserted with a new generated `id`.
-```{r station_insertion}
-# ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
-#   name = "Cies 2",
-#   description = "Western area of cies"
-# ))
+return the record just inserted with a new generated `id`. This chunk has been set not to run anymore as it can only run
+once. Set `eval=TRUE` if you want to run it again, however remember to provide a different unique name.
+```{r station_insertion, eval=FALSE}
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(
+  name = "Cies 2",
+  description = "Western area of cies"
+))
 ```
 Ensure that such receptor was sent and stored in the database by retrieving it from the API.
 ```{r station_checkup}
@@ -76,14 +63,15 @@ api_data %>%
 ```
 ## Creating receptors
 Receptors, besides a name, requires a unique string that identify them and that is stored in `serial_id`. As for
-receptors, a new generated `id` is returned when successful. Otherwise, an error is printed.
-```{r receptor_insertion}
-# serial_id <- stringi::stri_rand_strings(1, 10)
-# ret <- templo_client$add_single_record_and_fetch_id(end_point = "receptors/", data = list(
-#   name = "Buoy C21",
-#   serial_id = serial_id,
-#   description = "Receptor set up on a buoy"
-# ))
+receptors, a new generated `id` is returned when successful. Otherwise, an error is printed.`eval=FALSE` prevents the
+chunk from running.
+```{r receptor_insertion, eval=FALSE}
+serial_id <- stringi::stri_rand_strings(1, 10)
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "receptors/", data = list(
+  name = "Buoy C21",
+  serial_id = serial_id,
+  description = "Receptor set up on a buoy"
+))
 ```
 Ensure that such station was sent and stored in the database by retrieving it from the API.
 ```{r receptor_checkup}
@@ -95,18 +83,18 @@ api_data %>%
 ## Associating receptors to stations
 Once we have created receptors and stations separately, we may associate them by using a table that relate the two,
 represented by the endpoint `stations_receptors`. Notice that you've got to do that by picking the ids returned from
-earlier calls.
+earlier calls.`eval=FALSE` prevents the chunk from running.
 
-```{r receptor_station_association}
-# data <- list(
-#   stations_id = 198, # station that we just created by the name of "Cies 2"
-#   receptors_id = 9, # receptor stored as "Buoy C21"
-#   is_active = TRUE, # it indicates the receptor is active
-#   latitude = 42.2134,
-#   longitude = -8.8987,
-#   deployment_date = "2024-11-07 08:25:00" # Notice that dates are in yms_hms format
-# )
-# ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations_receptors/", data = data)
+```{r receptor_station_association, eval=FALSE}
+data <- list(
+  stations_id = 198, # station that we just created by the name of "Cies 2"
+  receptors_id = 9, # receptor stored as "Buoy C21"
+  is_active = TRUE, # it indicates the receptor is active
+  latitude = 42.2134,
+  longitude = -8.8987,
+  deployment_date = "2024-11-07 08:25:00" # Notice that dates are in yms_hms format
+)
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "stations_receptors/", data = data)
 ```
 Again, and for demonstrative purposes, we ensure that the association was successfully implemented by querying the API.
 ```{r receptor_association_checkup}
@@ -164,10 +152,27 @@ Deployed receptors are equipped with sensors that measure oceanographic variable
 
 ```{r available_environmental_variables}
 api_data <- templo_client$get_environmental_readings(from_date = "2024-10-10", to_date = "2024-10-12")
-head(api_data)
+head(api_data) %>%
+  dplyr::rename(c(
+    variable = environmental_variable_name,
+    receptor = receptor_name,
+    station = station_name,
+    lat = latitude,
+    lon = longitude
+  )) %>%
+  dplyr::select(
+    station,
+    receptor,
+    lat,
+    lon,
+    variable,
+    reading_time,
+    value
+  )
 ```
 You could hit an interval of time where no data was produced so an empty dataset will be returned instead.
 ```{r unavailable_environmental_variables}
 api_data <- templo_client$get_environmental_readings(from_date = "2024-01-01", to_date = "2024-02-02")
-api_data
+api_data %>%
+  assertr::verify(!nrow(.))
 ```

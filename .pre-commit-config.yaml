@@ -24,6 +24,12 @@ repos:
           .*\.Rds|
           .*\.Rproj|
           .*\.sh|
+          .*\.html|
+          .*\.css|
+          .*\.js|
+          .*\.json|
+          .*\.xml|
+          .*\.ttf|
           (.*/|)\.gitignore|
           (.*/|)\.gitlab-ci\.yml|
           (.*/|)\.lintr|
@@ -39,6 +45,7 @@ repos:
           (.*/|)WORDLIST|
           \.github/workflows/.*|
           data/.*|
+          docs\/.*|
           )$
     -   id: lintr
     -   id: readme-rmd-rendered
@@ -49,14 +56,15 @@ repos:
     -   id: deps-in-desc
         exclude: >
           (?x)^(
-          vignettes/.*
+          vignettes/.*|,
+          docs\/.*|
           )$
     #-   id: pkgdown
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
     -   id: check-added-large-files
-        args: ['--maxkb=200']
+        args: ['--maxkb=400']
     -   id: file-contents-sorter
         files: '^\.Rbuildignore$'
     -   id: end-of-file-fixer
