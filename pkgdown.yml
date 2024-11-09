@@ -1,0 +1,9 @@
+pandoc: 3.1.11
+pkgdown: 2.1.1
+pkgdown_sha: ~
+articles:
+  station_and_receptors: station_and_receptors.html
+last_built: 2024-11-09T11:13Z
+urls:
+  reference: https://d2gex.github.io/temploapiclient/reference
+  article: https://d2gex.github.io/temploapiclient/articles
