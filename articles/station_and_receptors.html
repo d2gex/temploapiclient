@@ -68,12 +68,11 @@
 <div class="section level2">
 <h2 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h2>
-<p>This vignette will create a virtual environment in the parent folder
-of the working directory and install <code>temploapiclient</code>. The
-name of the renv project will be <code>.temploaplicient_tmp</code> - you
-can name is as you like by modifying the code below. Alternatively you
-can skip this code and install <code>temploapiclient</code> system-wide
-by using <code>install.packages</code>.</p>
+<p>Ensure that the <code>temploapiclient</code> package is installed and
+available to this vignette. You can do that by calling
+<code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code>, which will also generate the
+<code>docs</code> folder or by simply calling
+<code><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages()</a></code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">project_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">path_to_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project_folder</span>, <span class="st">".env"</span><span class="op">)</span></span>
@@ -111,18 +110,20 @@ order:</p>
 unexpected happens, an error will be outputted. The code is commented
 out because a record can only be inserted once. Tough not shown here,
 when successful, the api call return the record just inserted with a new
-generated <code>id</code>.</p>
+generated <code>id</code>. This chunk has been set not to run anymore as
+it can only run once. Set <code>eval=TRUE</code> if you want to run it
+again, however remember to provide a different unique name.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># ret &lt;- templo_client$add_single_record_and_fetch_id(end_point = "stations/", data = list(</span></span>
-<span><span class="co">#   name = "Cies 2",</span></span>
-<span><span class="co">#   description = "Western area of cies"</span></span>
-<span><span class="co"># ))</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_single_record_and_fetch_id</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"Cies 2"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"Western area of cies"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Ensure that such receptor was sent and stored in the database by
 retrieving it from the API.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:35] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:35] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:05] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 2"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
@@ -135,20 +136,21 @@ retrieving it from the API.</p>
 <p>Receptors, besides a name, requires a unique string that identify
 them and that is stored in <code>serial_id</code>. As for receptors, a
 new generated <code>id</code> is returned when successful. Otherwise, an
-error is printed.</p>
+error is printed.<code>eval=FALSE</code> prevents the chunk from
+running.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># serial_id &lt;- stringi::stri_rand_strings(1, 10)</span></span>
-<span><span class="co"># ret &lt;- templo_client$add_single_record_and_fetch_id(end_point = "receptors/", data = list(</span></span>
-<span><span class="co">#   name = "Buoy C21",</span></span>
-<span><span class="co">#   serial_id = serial_id,</span></span>
-<span><span class="co">#   description = "Receptor set up on a buoy"</span></span>
-<span><span class="co"># ))</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">serial_id</span> <span class="op">&lt;-</span> <span class="fu">stringi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/stringi/man/stri_rand_strings.html" class="external-link">stri_rand_strings</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_single_record_and_fetch_id</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"receptors/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  name <span class="op">=</span> <span class="st">"Buoy C21"</span>,</span>
+<span>  serial_id <span class="op">=</span> <span class="va">serial_id</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"Receptor set up on a buoy"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Ensure that such station was sent and stored in the database by
 retrieving it from the API.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"receptors/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:36] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:36] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Buoy C21"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -161,28 +163,29 @@ retrieving it from the API.</p>
 <p>Once we have created receptors and stations separately, we may
 associate them by using a table that relate the two, represented by the
 endpoint <code>stations_receptors</code>. Notice that you’ve got to do
-that by picking the ids returned from earlier calls.</p>
+that by picking the ids returned from earlier
+calls.<code>eval=FALSE</code> prevents the chunk from running.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># data &lt;- list(</span></span>
-<span><span class="co">#   stations_id = 198, # station that we just created by the name of "Cies 2"</span></span>
-<span><span class="co">#   receptors_id = 9, # receptor stored as "Buoy C21"</span></span>
-<span><span class="co">#   is_active = TRUE, # it indicates the receptor is active</span></span>
-<span><span class="co">#   latitude = 42.2134,</span></span>
-<span><span class="co">#   longitude = -8.8987,</span></span>
-<span><span class="co">#   deployment_date = "2024-11-07 08:25:00" # Notice that dates are in yms_hms format</span></span>
-<span><span class="co"># )</span></span>
-<span><span class="co"># ret &lt;- templo_client$add_single_record_and_fetch_id(end_point = "stations_receptors/", data = data)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  stations_id <span class="op">=</span> <span class="fl">198</span>, <span class="co"># station that we just created by the name of "Cies 2"</span></span>
+<span>  receptors_id <span class="op">=</span> <span class="fl">9</span>, <span class="co"># receptor stored as "Buoy C21"</span></span>
+<span>  is_active <span class="op">=</span> <span class="cn">TRUE</span>, <span class="co"># it indicates the receptor is active</span></span>
+<span>  latitude <span class="op">=</span> <span class="fl">42.2134</span>,</span>
+<span>  longitude <span class="op">=</span> <span class="op">-</span><span class="fl">8.8987</span>,</span>
+<span>  deployment_date <span class="op">=</span> <span class="st">"2024-11-07 08:25:00"</span> <span class="co"># Notice that dates are in yms_hms format</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_single_record_and_fetch_id</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations_receptors/"</span>, data <span class="op">=</span> <span class="va">data</span><span class="op">)</span></span></code></pre></div>
 <p>Again, and for demonstrative purposes, we ensure that the association
 was successfully implemented by querying the API.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations_receptors/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:36] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:36] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">stations_id</span> <span class="op">==</span> <span class="fl">198</span> <span class="op">&amp;</span> <span class="va">receptors_id</span> <span class="op">==</span> <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   is_active     deployment_date longitude stations_id id receptors_id latitude</span></span>
-<span><span class="co">#&gt; 1      TRUE 2024-11-07T08:25:00   -8.8987         198  7            9  42.2134</span></span>
+<span><span class="co">#&gt;   stations_id     deployment_date is_active longitude receptors_id id latitude</span></span>
+<span><span class="co">#&gt; 1         198 2024-11-07T08:25:00      TRUE   -8.8987            9  7  42.2134</span></span>
 <span><span class="co">#&gt;   notes</span></span>
 <span><span class="co">#&gt; 1  &lt;NA&gt;</span></span></code></pre></div>
 </div>
@@ -196,20 +199,20 @@ twice an error will be prompted.</p>
 <span>  name <span class="op">=</span> <span class="st">"Cies 2"</span>, <span class="co"># name is an unique field and already exists in the database</span></span>
 <span>  description <span class="op">=</span> <span class="st">"Western area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:36] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-09 11:13:36] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:06] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-09 11:56:07] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "error": ["IntegrityError"],</span></span>
 <span><span class="co">#&gt;   "details": ["(MySQLdb.IntegrityError) (1062, \"Duplicate entry 'Cies 2' for key 'stations.name_UNIQUE'\")"]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-09 11:13:36] Data could not be send</span></span></code></pre></div>
+<span><span class="co">#&gt; }ERROR [2024-11-09 11:56:07] Data could not be send</span></span></code></pre></div>
 <p>… Or you could miss a required field such <code>name</code> and get a
 “field required” error</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_single_record_and_fetch_id</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  description <span class="op">=</span> <span class="st">"Western area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-09 11:13:37] Detected a 'field required' keyword. You may be missing an essential field in your query. Look      'loc' section for clues</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-09 11:56:07] Detected a 'field required' keyword. You may be missing an essential field in your query. Look      'loc' section for clues</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "detail": [</span></span>
 <span><span class="co">#&gt;     {</span></span>
@@ -224,7 +227,7 @@ twice an error will be prompted.</p>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;   ]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-09 11:13:37] Data could not be send</span></span></code></pre></div>
+<span><span class="co">#&gt; }ERROR [2024-11-09 11:56:07] Data could not be send</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="deleting-a-record">Deleting a record<a class="anchor" aria-label="anchor" href="#deleting-a-record"></a>
@@ -235,41 +238,41 @@ twice an error will be prompted.</p>
 <span>  name <span class="op">=</span> <span class="st">"Cies 3"</span>,</span>
 <span>  description <span class="op">=</span> <span class="st">"Eastern area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] ---&gt;Finished</span></span>
 <span><span class="va">new_record</span></span>
 <span><span class="co">#&gt; $name</span></span>
 <span><span class="co">#&gt; [1] "Cies 3"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $id</span></span>
-<span><span class="co">#&gt; [1] 312</span></span>
+<span><span class="co">#&gt; [1] 320</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $description</span></span>
 <span><span class="co">#&gt; [1] "Eastern area of cies"</span></span></code></pre></div>
 <p>Let’s ensure that the record was inserted in the database.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 3"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     name  id          description</span></span>
-<span><span class="co">#&gt; 1 Cies 3 312 Eastern area of cies</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Cies 3 320 Eastern area of cies</span></span></code></pre></div>
 <p>Now let’s deleted…</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  id <span class="op">=</span> <span class="va">new_record</span><span class="op">$</span><span class="va">id</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] Deleting data from  stations/ ...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:07] Deleting data from  stations/ ...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:08] ---&gt;Finished</span></span>
 <span><span class="va">ret</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>… And once again, ensure that such record no longer exists</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:37] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:38] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:08] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:08] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 3"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -288,18 +291,9 @@ worth of data at the time. Otherwise the API call may time out and
 produce no results or whatsoever.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-10-10"</span>, to_date <span class="op">=</span> <span class="st">"2024-10-12"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:38] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:40] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:08] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:10] ---&gt;Finished</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
-<span>    <span class="va">environmental_variable_name</span>,</span>
-<span>    <span class="va">latitude</span>,</span>
-<span>    <span class="va">longitude</span>,</span>
-<span>    <span class="va">reading_time</span>,</span>
-<span>    <span class="va">receptor_name</span>,</span>
-<span>    <span class="va">station_name</span>,</span>
-<span>    <span class="va">value</span></span>
-<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    variable <span class="op">=</span> <span class="va">environmental_variable_name</span>,</span>
 <span>    receptor <span class="op">=</span> <span class="va">receptor_name</span>,</span>
@@ -327,9 +321,10 @@ produce no results or whatsoever.</p>
 empty dataset will be returned instead.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-01-01"</span>, to_date <span class="op">=</span> <span class="st">"2024-02-02"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:40] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-09 11:13:41] ---&gt;Finished</span></span>
-<span><span class="va">api_data</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:10] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-09 11:56:11] ---&gt;Finished</span></span>
+<span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 0</span></span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
