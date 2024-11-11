@@ -183,7 +183,7 @@ datasets[[length(datasets) + 1]] <- data.frame(merged_id = 1:3) %>%
 datasets[[4]]
 ```
 
-### Built linking dataframe
+### Merge all datasets into a single dataframe
 Last and before sending the details to the API we need to merge all datasets.
 ```{r dataset_merging}
 tagged_individual_df <- datasets %>%
@@ -196,7 +196,7 @@ tagged_individual_df %>%
 ```
 ### Send all details to the API.
 We are ready to send all the details to the API,
-```{r dataset_API_sending, eval = TRUE}
+```{r dataset_API_sending, eval = FALSE}
 ret <- templo_client$add_tagged_individuals(
   tagged_individual_df,
   individual_prefix,

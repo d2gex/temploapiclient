@@ -1,8 +1,8 @@
 ---
-title: "station_and_receptors"
+title: "Create stations, receptors and link them"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{station_and_receptors}
+  %\VignetteIndexEntry{Create stations, receptors and link them}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 author: d2g
