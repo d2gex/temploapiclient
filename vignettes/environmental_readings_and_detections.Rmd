@@ -6,6 +6,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{css, echo=FALSE}
+pre {
+  overflow-x: scroll !important;
+}
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -55,4 +60,39 @@ We could hit an interval of time when no data was produced so an empty dataset w
 api_data <- templo_client$get_environmental_readings(from_date = "2024-01-01", to_date = "2024-02-02")
 api_data %>%
   assertr::verify(!nrow(.))
+```
+# Fetching detections
+Detections emitted by the sensors fitted in the tags that are surgically inserted into individuals read oceanographic variables too. Similar to environmental readings, detections should be downloaded in small chunks to avoid the API timing out and producing no results.
+In the results below we have massaged the data to provide contextual column names and trimmed those detections that produced no value.
+
+```{r available_detections}
+api_data <- templo_client$get_dataframe_end_point(end_point = "detections/data_exports/", parameters = list(
+  format = "json", # this parameters, for our purposes needs no change.
+  from_date = "2024-10-02",
+  to_date = "2024-10-03"
+))
+api_data %>%
+  dplyr::mutate(detection_value = as.numeric(detection_value)) %>%
+  dplyr::filter(assertr::not_na(detection_value)) %>%
+  dplyr::select(
+    sensor_id,
+    sensor_name,
+    individual_tag,
+    tag_model,
+    scientific_name,
+    station_name,
+    receptor_name,
+    detection_time,
+    detection_value
+  ) %>%
+  dplyr::rename(c(
+    id = sensor_id,
+    sensor = sensor_name,
+    individiual_id = individual_tag,
+    station = station_name,
+    receptor = receptor_name,
+    time = detection_time,
+    value = detection_value
+  )) %>%
+  head()
 ```
