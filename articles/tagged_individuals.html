@@ -126,8 +126,8 @@ duplicated in any way across, for example, two records.</p>
 successfully.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"species/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:34] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:34] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:45] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:45] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Faneca"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
@@ -146,8 +146,8 @@ turn, this to an individual.</p>
 such as PRESSURE, TEMPERATURE or DEPTH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:34] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:34] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:46] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:46] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span></span>
 <span><span class="co">#&gt;    id    type_name</span></span>
 <span><span class="co">#&gt; 1   4     ACTIVITY</span></span>
@@ -170,8 +170,8 @@ As for species this would be as:</p>
 <p>We check up that the record has been sent successfully.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:34] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:35] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:46] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:46] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type_name</span> <span class="op">==</span> <span class="st">"SALINITY"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -370,24 +370,24 @@ datasets.</p>
 <span>  <span class="va">sensor_prefix</span>,</span>
 <span>  <span class="va">tag_individual_prefix</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:35] Fetching data from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-11 12:25:35] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:47] Fetching data from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-11 12:27:47] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "detail": ["An error occurred: (MySQLdb.IntegrityError) (1062, \"Duplicate entry 'MOVE-RUN-fane-01' for key 'individuals.individuals_id_UNIQUE'\")\n[SQL: INSERT INTO individuals (individual_id, species_id, sex, total_length, weight, notes) VALUES (%s, %s, %s, %s, %s, %s)]\n[parameters: ('MOVE-RUN-fane-01', 13, 1, 35.0, None, None)]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)"]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-11 12:25:35] The individual MOVE-RUN-fane-01 failed to insert</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-11 12:25:36] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
+<span><span class="co">#&gt; }ERROR [2024-11-11 12:27:47] The individual MOVE-RUN-fane-01 failed to insert</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-11 12:27:47] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "detail": ["An error occurred: (MySQLdb.IntegrityError) (1062, \"Duplicate entry 'MOVE-RUN-raj-01' for key 'individuals.individuals_id_UNIQUE'\")\n[SQL: INSERT INTO individuals (individual_id, species_id, sex, total_length, weight, notes) VALUES (%s, %s, %s, %s, %s, %s)]\n[parameters: ('MOVE-RUN-raj-01', 1, 2, 80.0, None, None)]\n(Background on this error at: https://sqlalche.me/e/20/gkpj)"]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-11 12:25:36] The individual MOVE-RUN-raj-01 failed to insert</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-11 12:25:36] None of the individuals were inserted</span></span></code></pre></div>
+<span><span class="co">#&gt; }ERROR [2024-11-11 12:27:47] The individual MOVE-RUN-raj-01 failed to insert</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-11 12:27:47] None of the individuals were inserted</span></span></code></pre></div>
 <p>… But we need to ensure that the records were actually inserted.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:36] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:36] ---&gt; Converting results to dataframe...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:39] Fetching all sensor types from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:39] ---&gt;Finished</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:39] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:47] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:48] ---&gt; Converting results to dataframe...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:50] Fetching all sensor types from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:50] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:50] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">serial_number</span>, <span class="st">"vignette"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>

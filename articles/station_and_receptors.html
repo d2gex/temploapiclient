@@ -123,8 +123,8 @@ again, however remember to provide a different unique name.</p>
 retrieving it from the API.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:25] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:25] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:34] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:35] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 2"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
@@ -150,8 +150,8 @@ running.</p>
 retrieving it from the API.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"receptors/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:25] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:35] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:35] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Buoy C21"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -180,13 +180,13 @@ calls.<code>eval=FALSE</code> prevents the chunk from running.</p>
 was successfully implemented by querying the API.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations_receptors/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:36] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:36] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">stations_id</span> <span class="op">==</span> <span class="fl">198</span> <span class="op">&amp;</span> <span class="va">receptors_id</span> <span class="op">==</span> <span class="fl">9</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   is_active     deployment_date longitude stations_id id receptors_id latitude</span></span>
-<span><span class="co">#&gt; 1      TRUE 2024-11-07T08:25:00   -8.8987         198  7            9  42.2134</span></span>
+<span><span class="co">#&gt;   stations_id     deployment_date is_active longitude receptors_id id latitude</span></span>
+<span><span class="co">#&gt; 1         198 2024-11-07T08:25:00      TRUE   -8.8987            9  7  42.2134</span></span>
 <span><span class="co">#&gt;   notes</span></span>
 <span><span class="co">#&gt; 1  &lt;NA&gt;</span></span></code></pre></div>
 </div>
@@ -200,20 +200,20 @@ twice an error will be prompted.</p>
 <span>  name <span class="op">=</span> <span class="st">"Cies 2"</span>, <span class="co"># name is an unique field and already exists in the database</span></span>
 <span>  description <span class="op">=</span> <span class="st">"Western area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-11 12:25:26] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:36] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-11 12:27:36] Detected a 'duplicate' keyword. You may have inserted a record that already exist      in the database. See error below.</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "error": ["IntegrityError"],</span></span>
 <span><span class="co">#&gt;   "details": ["(MySQLdb.IntegrityError) (1062, \"Duplicate entry 'Cies 2' for key 'stations.name_UNIQUE'\")"]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-11 12:25:26] Data could not be send</span></span></code></pre></div>
+<span><span class="co">#&gt; }ERROR [2024-11-11 12:27:36] Data could not be send</span></span></code></pre></div>
 <p>… Or you could miss a required field such <code>name</code> and get a
 “field required” error</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_single_record_and_fetch_id</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  description <span class="op">=</span> <span class="st">"Western area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; ERROR [2024-11-11 12:25:26] Detected a 'field required' keyword. You may be missing an essential field in your query. Look      'loc' section for clues</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:36] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; ERROR [2024-11-11 12:27:36] Detected a 'field required' keyword. You may be missing an essential field in your query. Look      'loc' section for clues</span></span>
 <span><span class="co">#&gt; {</span></span>
 <span><span class="co">#&gt;   "detail": [</span></span>
 <span><span class="co">#&gt;     {</span></span>
@@ -228,7 +228,7 @@ twice an error will be prompted.</p>
 <span><span class="co">#&gt;       }</span></span>
 <span><span class="co">#&gt;     }</span></span>
 <span><span class="co">#&gt;   ]</span></span>
-<span><span class="co">#&gt; }ERROR [2024-11-11 12:25:26] Data could not be send</span></span></code></pre></div>
+<span><span class="co">#&gt; }ERROR [2024-11-11 12:27:36] Data could not be send</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="deleting-a-record">Deleting a record<a class="anchor" aria-label="anchor" href="#deleting-a-record"></a>
@@ -239,41 +239,41 @@ twice an error will be prompted.</p>
 <span>  name <span class="op">=</span> <span class="st">"Cies 3"</span>,</span>
 <span>  description <span class="op">=</span> <span class="st">"Eastern area of cies"</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:26] Sending data to  stations/ ...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:36] Sending data to  stations/ ...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] ---&gt;Finished</span></span>
 <span><span class="va">new_record</span></span>
 <span><span class="co">#&gt; $name</span></span>
 <span><span class="co">#&gt; [1] "Cies 3"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $id</span></span>
-<span><span class="co">#&gt; [1] 338</span></span>
+<span><span class="co">#&gt; [1] 340</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $description</span></span>
 <span><span class="co">#&gt; [1] "Eastern area of cies"</span></span></code></pre></div>
 <p>Let’s ensure that the record was inserted in the database.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 3"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt;     name  id          description</span></span>
-<span><span class="co">#&gt; 1 Cies 3 338 Eastern area of cies</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 Cies 3 340 Eastern area of cies</span></span></code></pre></div>
 <p>Now let’s deleted…</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  id <span class="op">=</span> <span class="va">new_record</span><span class="op">$</span><span class="va">id</span></span>
 <span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] Deleting data from  stations/ ...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] Deleting data from  stations/ ...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] ---&gt;Finished</span></span>
 <span><span class="va">ret</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
 <p>… And once again, ensure that such record no longer exists</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"stations/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Cies 3"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -292,8 +292,8 @@ worth of data at the time. Otherwise the API call may time out and
 produce no results or whatsoever.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-10-10"</span>, to_date <span class="op">=</span> <span class="st">"2024-10-12"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:27] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:29] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:37] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:39] ---&gt;Finished</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    variable <span class="op">=</span> <span class="va">environmental_variable_name</span>,</span>
@@ -322,8 +322,8 @@ produce no results or whatsoever.</p>
 empty dataset will be returned instead.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-01-01"</span>, to_date <span class="op">=</span> <span class="st">"2024-02-02"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:29] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:25:29] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:39] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:27:40] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 0</span></span></span></code></pre></div>
