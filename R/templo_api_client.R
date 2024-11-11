@@ -8,37 +8,15 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     self$api_url <- api_url
   },
   # @formatter:off
-  #' Add a tag with a sensor details to the database.
+  #' @description
+  #' Add a dataframe of unique species to the database through the API. One insertion is done per species.
+  #' Species failing to be inserted for whatever reason will be reported to the stdout, along with each error. Those
+  #' sucesfully inserted will be listed. In case either none or all were inserted, the final output will report it so.
   #'
-  #' @param end_point string with the name of the end point being queried. Default "tags_with_sensors/"
-  #' @param obj a nested list resulting from applying \link{NestedListBuilder}
+  #' @param end_point string with the name of the end point being queried.
   #' @returns TRUE or FALSE
   #' @export
   # @formatter:on
-  add_tag_with_sensor = function(df,
-                                 tag_prefix,
-                                 sensor_prefix,
-                                 field_names,
-                                 end_point = "tags_with_sensors/") {
-    # Check that certain fields aren't NA
-    not_na_fields <- names(df)
-    field_validator <- FieldValidation$new()
-    na_messages <- field_validator$check_na_fields(df, not_na_fields)
-    if (length(na_messages)) {
-      logger::log_error(paste("There are fields in the dataframe containing NA.", na_messages, sep = "\n"))
-      return(FALSE)
-    }
-    # Do the api call and deal with errors.
-    nested_list_builder <- NestedListBuilder$new()
-    obj <- nested_list_builder$build_tag_with_sensor_list(df, tag_prefix, sensor_prefix, field_names)
-
-    test_tag_with_sensor <- IIMApiClient$new(self$api_url)
-    ret <- test_tag_with_sensor$post_data_to_api(obj, end_point)
-    if (isTRUE(ret)) {
-      logger::log_info("All tagged individuals were successfully inserted")
-    }
-    return(ret)
-  },
   add_species = function(df, end_point = "species/") {
     # Check NA fields
     not_na_fields <- c("scientific_names", "common_name")
@@ -80,9 +58,10 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     return(TRUE)
   },
   # @formatter:off
-  #' Add a dataframe of tagged_individuals to the API. One insertion is done per individual, irrespective of
-  #' how many rows such individual may have due to its associated sensors. Individuals failing to be inserted
-  #' for whatever reason will be reported to the stdout, along with each error. Those sucesfully inserted will
+  #' @description
+  #' Add a dataframe of tagged_individuals to the database through the API. One insertion is done per individual,
+  #' irrespective of how many rows such individual may have due to its associated sensors. Individuals failing to be
+  #' inserted for whatever reason will be reported to the stdout, along with each error. Those sucesfully inserted will
   #' be listed. In case either none or all were inserted, the final output will report it so.
   #'
   #' @param df dataframe with pontetial multiple-row individuals (if multiple sensors); one row otherwise.
@@ -90,6 +69,8 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   #' @param tag_prefix string identifying what columns belong to the tag dataset
   #' @param sensor_prefix string identifying what columns belong to the sensor dataset
   #' @param tagged_individual_prefix string identifying what columns belong to the tagged_individual dataset
+  #' @param field_names a character vector containing what the names of the datasets to be sent to the API should be
+  #' @param end_point string with the name of the end point being queried.
   #' @returns TRUE or FALSE
   #' @export
   # @formatter:on
@@ -215,7 +196,9 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   },
   # @formatter:off
   #' @description
-  #' Get all tagged individuals from the database. This operation may take a few seconds.
+  #' Get all tagged individuals from the database. This operation may take a few seconds and makes
+  #' two API calls: one to get the tagged_individual data and another one to get the sensor types. The
+  #' final result is a merge between both retrieved datasets.
   #'
   #' @param end_point string with the name of the end point being queried.
   #' @param tagged_individual_fields list of sections and fields per section to be retrieved.
