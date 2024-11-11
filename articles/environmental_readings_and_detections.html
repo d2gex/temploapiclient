@@ -65,6 +65,11 @@
 
     
     
+<style type="text/css">
+pre {
+  overflow-x: scroll !important;
+}
+</style>
 <div class="section level2">
 <h2 id="initial-setup-and-api-credentials">Initial Setup and Api Credentials<a class="anchor" aria-label="anchor" href="#initial-setup-and-api-credentials"></a>
 </h2>
@@ -94,8 +99,8 @@ result in an error.</p>
 few fields for showcasing purposes.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-10-10"</span>, to_date <span class="op">=</span> <span class="st">"2024-10-12"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 15:09:30] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 15:09:32] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:42] Fetching environmental readings from  2024-10-10 to 2024-10-12 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:44] ---&gt;Finished</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">api_data</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    variable <span class="op">=</span> <span class="va">environmental_variable_name</span>,</span>
@@ -124,11 +129,67 @@ few fields for showcasing purposes.</p>
 empty dataset will be returned instead.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_environmental_readings</span><span class="op">(</span>from_date <span class="op">=</span> <span class="st">"2024-01-01"</span>, to_date <span class="op">=</span> <span class="st">"2024-02-02"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 15:09:32] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 15:09:33] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:44] Fetching environmental readings from  2024-01-01 to 2024-02-02 ... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:45] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 0</span></span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="fetching-detections">Fetching detections<a class="anchor" aria-label="anchor" href="#fetching-detections"></a>
+</h2>
+<p>Detections emitted by the sensors fitted in the tags that are
+surgically inserted into individuals read oceanographic variables too.
+Similar to environmental readings, detections should be downloaded in
+small chunks to avoid the API timing out and producing no results. In
+the results below we have massaged the data to provide contextual column
+names and trimmed those detections that produced no value.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"detections/data_exports/"</span>, parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  format <span class="op">=</span> <span class="st">"json"</span>, <span class="co"># this parameters, for our purposes needs no change.</span></span>
+<span>  from_date <span class="op">=</span> <span class="st">"2024-10-02"</span>,</span>
+<span>  to_date <span class="op">=</span> <span class="st">"2024-10-03"</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:45] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:37:47] ---&gt;Finished</span></span>
+<span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>detection_value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">detection_value</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/not_na.html" class="external-link">not_na</a></span><span class="op">(</span><span class="va">detection_value</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span></span>
+<span>    <span class="va">sensor_id</span>,</span>
+<span>    <span class="va">sensor_name</span>,</span>
+<span>    <span class="va">individual_tag</span>,</span>
+<span>    <span class="va">tag_model</span>,</span>
+<span>    <span class="va">scientific_name</span>,</span>
+<span>    <span class="va">station_name</span>,</span>
+<span>    <span class="va">receptor_name</span>,</span>
+<span>    <span class="va">detection_time</span>,</span>
+<span>    <span class="va">detection_value</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    id <span class="op">=</span> <span class="va">sensor_id</span>,</span>
+<span>    sensor <span class="op">=</span> <span class="va">sensor_name</span>,</span>
+<span>    individiual_id <span class="op">=</span> <span class="va">individual_tag</span>,</span>
+<span>    station <span class="op">=</span> <span class="va">station_name</span>,</span>
+<span>    receptor <span class="op">=</span> <span class="va">receptor_name</span>,</span>
+<span>    time <span class="op">=</span> <span class="va">detection_time</span>,</span>
+<span>    value <span class="op">=</span> <span class="va">detection_value</span></span>
+<span>  <span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     id      sensor individiual_id tag_model scientific_name station receptor</span></span>
+<span><span class="co">#&gt; 1 1155    PRESSURE MOVE-RUN-23-32  03EX1155   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt; 2 1156 TEMPERATURE MOVE-RUN-23-32  03EX1156   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt; 3 1100 TEMPERATURE MOVE-RUN-23-11  03E51100   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt; 4 1151    PRESSURE MOVE-RUN-23-30  03EV1151   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt; 5 1152 TEMPERATURE MOVE-RUN-23-30  03EV1152   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt; 6 1196 TEMPERATURE MOVE-RUN-23-02  03FH1196   Raja undulata    Cíes     Cíes</span></span>
+<span><span class="co">#&gt;                  time value</span></span>
+<span><span class="co">#&gt; 1 2024-10-03 22:48:46    23</span></span>
+<span><span class="co">#&gt; 2 2024-10-03 22:02:21   157</span></span>
+<span><span class="co">#&gt; 3 2024-10-03 21:38:23   160</span></span>
+<span><span class="co">#&gt; 4 2024-10-03 21:18:49  4095</span></span>
+<span><span class="co">#&gt; 5 2024-10-03 20:59:59   159</span></span>
+<span><span class="co">#&gt; 6 2024-10-03 20:40:53   159</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
