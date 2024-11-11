@@ -22,13 +22,11 @@ TRUE if successfully completed. Error message otherwise.
 }
 \description{
 API client to consume TEMPLO's API
-Add a tag with a sensor details to the database.
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TemploApiClient-new}{\code{TemploApiClient$new()}}
-\item \href{#method-TemploApiClient-add_tag_with_sensor}{\code{TemploApiClient$add_tag_with_sensor()}}
 \item \href{#method-TemploApiClient-add_species}{\code{TemploApiClient$add_species()}}
 \item \href{#method-TemploApiClient-add_tagged_individuals}{\code{TemploApiClient$add_tagged_individuals()}}
 \item \href{#method-TemploApiClient-add_single_record_and_fetch_id}{\code{TemploApiClient$add_single_record_and_fetch_id()}}
@@ -50,42 +48,32 @@ Add a tag with a sensor details to the database.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TemploApiClient-add_tag_with_sensor"></a>}}
-\if{latex}{\out{\hypertarget{method-TemploApiClient-add_tag_with_sensor}{}}}
-\subsection{Method \code{add_tag_with_sensor()}}{
+\if{html}{\out{<a id="method-TemploApiClient-add_species"></a>}}
+\if{latex}{\out{\hypertarget{method-TemploApiClient-add_species}{}}}
+\subsection{Method \code{add_species()}}{
+Add a dataframe of unique species to the database through the API. One insertion is done per species.
+Species failing to be inserted for whatever reason will be reported to the stdout, along with each error. Those
+sucesfully inserted will be listed. In case either none or all were inserted, the final output will report it so.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$add_tag_with_sensor(
-  df,
-  tag_prefix,
-  sensor_prefix,
-  field_names,
-  end_point = "tags_with_sensors/"
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$add_species(df, end_point = "species/")}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{end_point}}{string with the name of the end point being queried. Default "tags_with_sensors/"}
-
-\item{\code{obj}}{a nested list resulting from applying \link{NestedListBuilder}}
+\item{\code{end_point}}{string with the name of the end point being queried.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TemploApiClient-add_species"></a>}}
-\if{latex}{\out{\hypertarget{method-TemploApiClient-add_species}{}}}
-\subsection{Method \code{add_species()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$add_species(df, end_point = "species/")}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TemploApiClient-add_tagged_individuals"></a>}}
 \if{latex}{\out{\hypertarget{method-TemploApiClient-add_tagged_individuals}{}}}
 \subsection{Method \code{add_tagged_individuals()}}{
+Add a dataframe of tagged_individuals to the database through the API. One insertion is done per individual,
+irrespective of how many rows such individual may have due to its associated sensors. Individuals failing to be
+inserted for whatever reason will be reported to the stdout, along with each error. Those sucesfully inserted will
+be listed. In case either none or all were inserted, the final output will report it so.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$add_tagged_individuals(
   df,
@@ -111,6 +99,10 @@ Add a tag with a sensor details to the database.
 \item{\code{sensor_prefix}}{string identifying what columns belong to the sensor dataset}
 
 \item{\code{tagged_individual_prefix}}{string identifying what columns belong to the tagged_individual dataset}
+
+\item{\code{field_names}}{a character vector containing what the names of the datasets to be sent to the API should be}
+
+\item{\code{end_point}}{string with the name of the end point being queried.}
 }
 \if{html}{\out{</div>}}
 }
@@ -155,7 +147,9 @@ Get all sensor types currently in the database
 \if{html}{\out{<a id="method-TemploApiClient-get_tagged_individuals"></a>}}
 \if{latex}{\out{\hypertarget{method-TemploApiClient-get_tagged_individuals}{}}}
 \subsection{Method \code{get_tagged_individuals()}}{
-Get all tagged individuals from the database. This operation may take a few seconds.
+Get all tagged individuals from the database. This operation may take a few seconds and makes
+two API calls: one to get the tagged_individual data and another one to get the sensor types. The
+final result is a merge between both retrieved datasets.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$get_tagged_individuals(
   end_point,

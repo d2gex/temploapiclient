@@ -5,8 +5,6 @@ vignette: >
   %\VignetteIndexEntry{Create stations, receptors and link them}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-author: d2g
-date: 06-11-2024
 ---
 
 ```{r, include = FALSE}
@@ -17,23 +15,25 @@ knitr::opts_chunk$set(
 ```
 
 
-# Setup
-Ensure that the `temploapiclient` package is installed and available to this vignette. You can do that by calling `pkgdown::build_site()`, which will also generate the `docs` folder or by simply calling `install.packages()`.
+# Initial Setup and Api Credentials
+This setup is consistent across all vignettes and has been copied over for demonstration purposes. If you run the entire vignette at once, a new R session will start each time, so make sure to install the `temploapiclient` package beforehand. You can do this by using `install.packages`, `renv::install` for virtual environments, or `pkgdown::build_site` if you want to generate local documentation. The last command will also temporarily install the R package being showcased to make it available in the vignettes.
+
+Alternatively, if you'd like to run each section individually, load `temploapiclient` with `devtools::load_all` and set the working directory to `temploapiclient/vignettes` using `setwd()`.
+
+Last but not least, if you have already installed this package none of the above is necessary.
 
 ```{r setup}
 project_folder <- dirname(getwd())
 path_to_env <- file.path(project_folder, ".env")
-library("magrittr") # Make '%>%' available throughout the vignette
-```
-# API credentials reading
-Let's get the base url where the API is hosted from the hard-drive to avoid pasting it here.
-```{r read_environment}
 readRenviron(path_to_env)
 api_base_url <- Sys.getenv("API_BASE_URL")
 ```
+
+
 Then let's instantiate the client to query the TEMPLO api
 ```{r instantiate_client}
 templo_client <- temploapiclient::TemploApiClient$new(api_base_url)
+library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # Creating stations, receptors and linking both
 Stations and receptors have a 1:N relationship where one station could be associated to multiple receptors. In order to build such relationship the following steps need to be taken in chronological order:
@@ -146,33 +146,4 @@ api_data <- templo_client$get_dataframe_end_point(end_point = "stations/")
 api_data %>%
   dplyr::filter(name == "Cies 3") %>%
   assertr::verify(nrow(.) == 0)
-```
-# Fetching environmental readings
-Deployed receptors are equipped with sensors that measure oceanographic variables such as temperature, pressure, etc... Such readings can be obtained from the API too. Readings are generate with a very fine time resolution so it is advised to fetch two o three days worth of data at the time. Otherwise the API call may time out and produce no results or whatsoever.
-
-```{r available_environmental_variables}
-api_data <- templo_client$get_environmental_readings(from_date = "2024-10-10", to_date = "2024-10-12")
-head(api_data) %>%
-  dplyr::rename(c(
-    variable = environmental_variable_name,
-    receptor = receptor_name,
-    station = station_name,
-    lat = latitude,
-    lon = longitude
-  )) %>%
-  dplyr::select(
-    station,
-    receptor,
-    lat,
-    lon,
-    variable,
-    reading_time,
-    value
-  )
-```
-You could hit an interval of time where no data was produced so an empty dataset will be returned instead.
-```{r unavailable_environmental_variables}
-api_data <- templo_client$get_environmental_readings(from_date = "2024-01-01", to_date = "2024-02-02")
-api_data %>%
-  assertr::verify(!nrow(.))
 ```

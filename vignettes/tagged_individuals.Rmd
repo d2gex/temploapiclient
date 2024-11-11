@@ -19,9 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 # Initial Setup and Api Credentials
-This setup is consistent across all vignettes and has been copied over for demonstration purposes. If you run the entire vignette at once, a new R session will start each time, so make sure to install the `temploapiclient` package beforehand. You can do this by using `install.packages`, `renv::install` for virtual environments, or `pkgdown::build_site` if you want to generate local documentation. The last command will also temporarily install the R package being showcased to make it available in the vignettes.
-
-Alternatively, if you'd like to run each section individually, load `temploapiclient` with `devtools::load_all` and set the working directory to `temploapiclient/vignettes` using `setwd()`.
+Please see [station_and_receptors](../articles/station_and_receptors.html) for further details about how to make available the showcased package `temploapiclient` to this vignette.
 ```{r setup}
 project_folder <- dirname(getwd())
 path_to_env <- file.path(project_folder, ".env")

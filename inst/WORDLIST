@@ -8,6 +8,7 @@ Config
 cre
 csic
 datetime
+detections
 dgarcia
 dplyr
 faneca
@@ -40,7 +41,9 @@ rmarkdown
 Roxygen
 RoxygenNote
 sensortypes
+stdout
 stringr
+sucesfully
 templeapiclient
 TEMPLO
 templo
@@ -48,6 +51,7 @@ TEMPLO's
 TemploApi
 temploapiclient
 testthat
+th
 tidyselect
 Trisopterus
 undulata
