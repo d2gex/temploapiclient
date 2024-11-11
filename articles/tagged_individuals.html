@@ -33,7 +33,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/station_and_receptors.html">Create stations, receptors and link them</a></li>
+<li><a class="dropdown-item" href="../articles/environmental_readings_and_detections.html">Environmental readings and detections</a></li>
+    <li><a class="dropdown-item" href="../articles/station_and_receptors.html">Create stations, receptors and link them</a></li>
     <li><a class="dropdown-item" href="../articles/tagged_individuals.html">Create species, individuals, tags, sensors and link them all</a></li>
   </ul>
 </li>
@@ -72,19 +73,9 @@ pre {
 <div class="section level2">
 <h2 id="initial-setup-and-api-credentials">Initial Setup and Api Credentials<a class="anchor" aria-label="anchor" href="#initial-setup-and-api-credentials"></a>
 </h2>
-<p>This setup is consistent across all vignettes and has been copied
-over for demonstration purposes. If you run the entire vignette at once,
-a new R session will start each time, so make sure to install the
-<code>temploapiclient</code> package beforehand. You can do this by
-using <code>install.packages</code>, <code><a href="https://rstudio.github.io/renv/reference/install.html" class="external-link">renv::install</a></code> for
-virtual environments, or <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site</a></code> if you want to
-generate local documentation. The last command will also temporarily
-install the R package being showcased to make it available in the
-vignettes.</p>
-<p>Alternatively, if you’d like to run each section individually, load
-<code>temploapiclient</code> with <code>devtools::load_all</code> and
-set the working directory to <code>temploapiclient/vignettes</code>
-using <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">setwd()</a></code>.</p>
+<p>Please see <a href="../articles/station_and_receptors.html">station_and_receptors</a>
+for further details about how to make available the showcased package
+<code>temploapiclient</code> to this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">project_folder</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">path_to_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">project_folder</span>, <span class="st">".env"</span><span class="op">)</span></span>
@@ -127,13 +118,13 @@ duplicated in any way across, for example, two records.</p>
 successfully.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"species/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:37] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:37] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:41] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:42] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Faneca"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
-<span><span class="co">#&gt;   common_name    scientific_name id fao</span></span>
-<span><span class="co">#&gt; 1      Faneca Trisopterus luscus 13  NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   common_name id    scientific_name fao</span></span>
+<span><span class="co">#&gt; 1      Faneca 13 Trisopterus luscus  NA</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create-sensor-type">Create sensor type<a class="anchor" aria-label="anchor" href="#create-sensor-type"></a>
@@ -147,8 +138,8 @@ turn, this to an individual.</p>
 such as PRESSURE, TEMPERATURE or DEPTH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:37] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:38] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:42] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:42] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span></span>
 <span><span class="co">#&gt;       type_name id</span></span>
 <span><span class="co">#&gt; 1      ACTIVITY  4</span></span>
@@ -171,8 +162,8 @@ As for species this would be as:</p>
 <p>We check up that the record has been sent successfully.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:38] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:38] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:42] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:42] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type_name</span> <span class="op">==</span> <span class="st">"SALINITY"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -374,11 +365,11 @@ datasets.</p>
 <p>… But we need to ensure that the records were actually inserted.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:38] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:39] ---&gt; Converting results to dataframe...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:41] Fetching all sensor types from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:41] ---&gt;Finished</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 13:00:41] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:43] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:44] ---&gt; Converting results to dataframe...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:46] Fetching all sensor types from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:46] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 15:09:46] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">serial_number</span>, <span class="st">"vignette"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>

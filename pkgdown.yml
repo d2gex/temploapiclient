@@ -2,9 +2,10 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
+  environmental_readings_and_detections: environmental_readings_and_detections.html
   station_and_receptors: station_and_receptors.html
   tagged_individuals: tagged_individuals.html
-last_built: 2024-11-11T13:00Z
+last_built: 2024-11-11T15:09Z
 urls:
   reference: https://d2gex.github.io/temploapiclient/reference
   article: https://d2gex.github.io/temploapiclient/articles
