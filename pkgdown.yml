@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   station_and_receptors: station_and_receptors.html
   tagged_individuals: tagged_individuals.html
-last_built: 2024-11-11T12:41Z
+last_built: 2024-11-11T12:46Z
 urls:
   reference: https://d2gex.github.io/temploapiclient/reference
   article: https://d2gex.github.io/temploapiclient/articles

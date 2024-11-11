@@ -111,7 +111,8 @@ follows:</p>
 <p>Fortunately for us, the API has been shipped with a method that wraps
 up the last 4 actions allowing them to be completed at once.</p>
 <div class="section level3">
-<h3 id="create-a-new-species">Create a new species<a class="anchor" aria-label="anchor" href="#create-a-new-species"></a>
+<h3 id="creating-species-individuals-tags-sensors-and-linking-them-all">Creating species, individuals, tags, sensors and linking them
+all<a class="anchor" aria-label="anchor" href="#creating-species-individuals-tags-sensors-and-linking-them-all"></a>
 </h3>
 <p>Species table contains two unique names: <code>scientific_name</code>
 and <code>common_name</code>. This means that such names cannot be
@@ -126,8 +127,8 @@ duplicated in any way across, for example, two records.</p>
 successfully.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"species/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:47] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:48] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:42] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:43] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Faneca"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
@@ -146,20 +147,20 @@ turn, this to an individual.</p>
 such as PRESSURE, TEMPERATURE or DEPTH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:48] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:48] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:43] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:43] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span></span>
-<span><span class="co">#&gt;       type_name id</span></span>
-<span><span class="co">#&gt; 1      ACTIVITY  4</span></span>
-<span><span class="co">#&gt; 2  CONDUCTIVITY  5</span></span>
-<span><span class="co">#&gt; 3         DEPTH  1</span></span>
-<span><span class="co">#&gt; 4     MORTALITY  6</span></span>
-<span><span class="co">#&gt; 5         NUEVO 17</span></span>
-<span><span class="co">#&gt; 6      PRESSURE 38</span></span>
-<span><span class="co">#&gt; 7      SALINITY 39</span></span>
-<span><span class="co">#&gt; 8        string  7</span></span>
-<span><span class="co">#&gt; 9   TEMPERATURE  3</span></span>
-<span><span class="co">#&gt; 10         TILT  2</span></span></code></pre></div>
+<span><span class="co">#&gt;    id    type_name</span></span>
+<span><span class="co">#&gt; 1   4     ACTIVITY</span></span>
+<span><span class="co">#&gt; 2   5 CONDUCTIVITY</span></span>
+<span><span class="co">#&gt; 3   1        DEPTH</span></span>
+<span><span class="co">#&gt; 4   6    MORTALITY</span></span>
+<span><span class="co">#&gt; 5  17        NUEVO</span></span>
+<span><span class="co">#&gt; 6  38     PRESSURE</span></span>
+<span><span class="co">#&gt; 7  39     SALINITY</span></span>
+<span><span class="co">#&gt; 8   7       string</span></span>
+<span><span class="co">#&gt; 9   3  TEMPERATURE</span></span>
+<span><span class="co">#&gt; 10  2         TILT</span></span></code></pre></div>
 <p>Let’s assume that we wanted to add another one to measure salinity.
 As for species this would be as:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -170,13 +171,13 @@ As for species this would be as:</p>
 <p>We check up that the record has been sent successfully.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:48] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:48] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:43] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:44] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type_name</span> <span class="op">==</span> <span class="st">"SALINITY"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   id type_name</span></span>
-<span><span class="co">#&gt; 1 39  SALINITY</span></span></code></pre></div>
+<span><span class="co">#&gt;   type_name id</span></span>
+<span><span class="co">#&gt; 1  SALINITY 39</span></span></code></pre></div>
 <p>Please notice that the field <code>type_name</code> is unique so that
 there cannot be duplicated measured variables.</p>
 </div>
@@ -373,11 +374,11 @@ datasets.</p>
 <p>… But we need to ensure that the records were actually inserted.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:49] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:50] ---&gt; Converting results to dataframe...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:52] Fetching all sensor types from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:52] ---&gt;Finished</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 12:41:52] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:44] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:45] ---&gt; Converting results to dataframe...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:47] Fetching all sensor types from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:47] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-11 12:46:47] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">serial_number</span>, <span class="st">"vignette"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>
