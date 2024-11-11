@@ -43,7 +43,7 @@ In order to add tagged individuals to the database and given that we are using a
 
 Fortunately for us, the API has been shipped with a method that wraps up the last 4 actions allowing them to be completed at once.
 
-## Create a new species
+## Creating species, individuals, tags, sensors and linking them all
 Species table contains two unique names: `scientific_name` and `common_name`. This means that such names cannot be duplicated in any way across, for example, two records.
 ```{r species_insertion, eval = FALSE}
 ret <- templo_client$add_single_record_and_fetch_id(end_point = "species/", data = list(
