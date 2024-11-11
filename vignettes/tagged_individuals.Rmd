@@ -6,6 +6,11 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{css, echo=FALSE}
+pre {
+  overflow-x: scroll !important;
+}
+```
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -47,10 +52,164 @@ ret <- templo_client$add_single_record_and_fetch_id(end_point = "species/", data
 ))
 ret
 ```
-Then we double check that faneca has been send and stored successfully.
-```{r speices_checkup}
+Then we double-check that faneca has been sent and stored successfully.
+```{r species_checkup}
 api_data <- templo_client$get_dataframe_end_point(end_point = "species/")
 api_data %>%
   dplyr::filter(common_name == "Faneca") %>%
   assertr::verify(nrow(.) == 1) # It will halt the execution and print an error if such record does not exist
+```
+## Create sensor type
+Each tag is associated to certain type of sensors that measure oceanographic variables such as pressure or temperature.
+As for species, we need to ensure that such *sensor types* already exist in the database before trying associate a
+sensor of that kind to a tag and in turn, this to an individual.
+
+As the code below shows, there are already different types of sensors such as PRESSURE, TEMPERATURE or DEPTH.
+```{r sensor_types}
+api_data <- templo_client$get_dataframe_end_point(end_point = "sensortypes/")
+api_data
+```
+Let's assume that we wanted to add another one to measure salinity. As for species this would be as:
+```{r sensor_types_insertion, eval = FALSE}
+ret <- templo_client$add_single_record_and_fetch_id(end_point = "sensortypes/", data = list(
+  type_name = "SALINITY"
+))
+ret
+```
+We check up that the record has been sent successfully.
+```{r sensor_types_checkup}
+api_data <- templo_client$get_dataframe_end_point(end_point = "sensortypes/")
+api_data %>%
+  dplyr::filter(type_name == "SALINITY") %>%
+  assertr::verify(nrow(.) == 1)
+```
+Please notice that the field `type_name` is unique so that there cannot be duplicated measured variables.
+
+## 'tagged_individuals' dataframe build-up
+From the previous insertion we identified that the species faneca was added with `id=13` and that sensor ids are
+`SALINITY = 39`, `PRESSURE = 38`,`TEMPERATURE = 3`. Next, we will create a dataframe that contains the data of the
+individuals we wish to insert, along with their associated tagging details.
+
+Let's assume a scenario where we want to add two individuals, each belonging to a different species `Trisopterus lucus` and `Raja undulata`. The summary of such scenario is as follows:
+
+1. Trisopterus luscus
+   1. Sensors DEPTH and PRESSURE
+   2. Tag is external and active
+
+2. Raja undulata
+   1. Sensors SALINITY
+   2. Tag is internal and active
+
+In the next steps, we will create individual datasets for each species and combine them into a single tagged_individuals dataframe to be sent to the API. Notice that this step-by-step guide is not required as you can create the whole dataframe at once
+by means you consider more suitable.
+
+### Built the sensor dataframe
+We need to create a two-column dataframe that includes each sensor’s `id`, as retrieved from THELMA, along with its type (`sensor`). Next, we’ll construct a dataframe with three rows to represent the sensors: two for faneca (which has two sensors) and one for ray.
+```{r sensors_dataframe_buildup}
+datasets <- list()
+sensor_prefix <- "sensor_" # prefix that indicates the logic that fields belong to sensor category
+sensor_ids <- sample(11700:11800, 3) # 3 random IDS with the hope none of them are in the db already
+datasets[[length(datasets) + 1]] <- data.frame(merged_id = 1:3) %>% # to merge with following datasets.
+  dplyr::mutate(
+    !!paste0(sensor_prefix, "id") := sensor_ids,
+    !!paste0(sensor_prefix, "sensor") := c("DEPTH", "PRESSURE", "SALINITY"),
+  )
+datasets[[1]]
+```
+
+### Built the tag dataframe on top of sensor's
+As for sensors we need to use a prefix to build the tag columns which we will name `tag_`. The fields required
+for this dataset are `serial_number`, `frequency` and `comm_protocol`. All three fields are expected to be strings and are obtained from THELMA. Notice that all individuals whose tags have multiple sensors do need to have the same `serial_number`.
+The dataframe is constructed as follows:
+```{r tags_dataframe_buildup}
+tag_prefix <- "tag_"
+# Again, we build two random alphanumeric ids for shwocasing purposes
+random_strings <- stringi::stri_rand_strings(2, 4)
+serial_ids <- paste0("vignette_", c(rep(random_strings[1], 2), random_strings[2]))
+frequency <- rep("69 kHz", 3)
+comm_protocol <- rep("Ops", 3)
+datasets[[length(datasets) + 1]] <- data.frame(merged_id = 1:3) %>%
+  dplyr::mutate(
+    !!paste0(tag_prefix, "serial_number") := serial_ids,
+    !!paste0(tag_prefix, "frequency") := frequency,
+    !!paste0(tag_prefix, "comm_protocol") := comm_protocol
+  )
+datasets[[2]]
+```
+### Built the individual dataframe
+Likewise we need to build the data for each individual which fields are as follows:
+1. `individual_id`
+2. `scientific_name`
+3. `common_name`
+4. `sex`
+5. `total_length`
+
+```{r individual_dataframe_buildup}
+individual_prefix <- "ind_"
+# Again, we build three random alphanumeric ids for shwocasing purposes
+individual_ids <- paste0("MOVE-RUN-", c(rep("fane-01", 2), "raj-01"))
+scientific_names <- c(rep("Trisopterus luscus", 2), "Raja undulata")
+common_names <- c(rep("Faneca", 2), "Undulate ray")
+sex <- c(1, 1, 2) # two males and one females. We don't know yet what should be assigned for male and female
+total_lengths <- c(35, 35, 80) # in cms (first two refer to the same individual)
+datasets[[length(datasets) + 1]] <- data.frame(merged_id = 1:3) %>%
+  dplyr::mutate(
+    !!paste0(individual_prefix, "individual_id") := individual_ids,
+    !!paste0(individual_prefix, "scientific_name") := scientific_names,
+    !!paste0(individual_prefix, "common_name") := common_names,
+    !!paste0(individual_prefix, "sex") := sex,
+    !!paste0(individual_prefix, "total_length") := total_lengths,
+  )
+datasets[[3]]
+```
+### Built linking dataframe
+Tags and individuals are linked by an association through three fields that determines how such relationship is defined. These fields are:
+1. `is_internal`: whether the tag is internal or external
+2. `is_active`: whether the tag is active or not
+3. `tagged_date`: a datetime field following ymd_hms format, i.e, 2024-11-04 17:35:35
+
+```{r tagged_individuals_dataframe_buildup}
+tag_individual_prefix <- "tagged_individual_"
+# Again, we build three random alphanumeric ids for shwocasing purposes
+is_internal <- c(TRUE, TRUE, FALSE)
+is_active <- rep(TRUE, 3)
+tagged_date <- c(rep("2024-11-11 12:02:00", 2), "2024-11-11 13:01:17")
+datasets[[length(datasets) + 1]] <- data.frame(merged_id = 1:3) %>%
+  dplyr::mutate(
+    !!paste0(tag_individual_prefix, "is_internal") := is_internal,
+    !!paste0(tag_individual_prefix, "is_active") := is_active,
+    !!paste0(tag_individual_prefix, "tagged_date") := tagged_date
+  )
+datasets[[4]]
+```
+
+### Built linking dataframe
+Last and before sending the details to the API we need to merge all datasets.
+```{r dataset_merging}
+tagged_individual_df <- datasets %>%
+  purrr::reduce(dplyr::full_join, by = "merged_id") %>%
+  dplyr::select(-merged_id)
+
+tagged_individual_df %>%
+  assertr::verify(nrow(.) == 3) %>%
+  assertr::verify(!"merged_id" %in% names(.))
+```
+### Send all details to the API.
+We are ready to send all the details to the API,
+```{r dataset_API_sending, eval = TRUE}
+ret <- templo_client$add_tagged_individuals(
+  tagged_individual_df,
+  individual_prefix,
+  tag_prefix,
+  sensor_prefix,
+  tag_individual_prefix
+)
+```
+... But we need to ensure that the records were actually inserted.
+
+```{r dataset_API_sending_checkup}
+api_data <- templo_client$get_tagged_individuals(end_point = "tagged_individuals/")
+api_data %>%
+  dplyr::filter(stringr::str_detect(serial_number, "vignette")) %>%
+  assertr::verify(nrow(.) == 3)
 ```

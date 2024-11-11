@@ -28,10 +28,13 @@ json
 jsonlite
 knitr
 lubridate
+luscus
 magrittr
 mit
 NestedListBuilder
+pontetial
 purrr
+Raja
 renv
 rmarkdown
 Roxygen
@@ -46,6 +49,8 @@ TemploApi
 temploapiclient
 testthat
 tidyselect
+Trisopterus
+undulata
 validator
 VignetteBuilder
 ymd

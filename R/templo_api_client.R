@@ -79,12 +79,31 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     logger::log_info("All species were successfully inserted")
     return(TRUE)
   },
+  # @formatter:off
+  #' Add a dataframe of tagged_individuals to the API. One insertion is done per individual, irrespective of
+  #' how many rows such individual may have due to its associated sensors. Individuals failing to be inserted
+  #' for whatever reason will be reported to the stdout, along with each error. Those sucesfully inserted will
+  #' be listed. In case either none or all were inserted, the final output will report it so.
+  #'
+  #' @param df dataframe with pontetial multiple-row individuals (if multiple sensors); one row otherwise.
+  #' @param individual_prefix string identifying what columns belong to the individual dataset
+  #' @param tag_prefix string identifying what columns belong to the tag dataset
+  #' @param sensor_prefix string identifying what columns belong to the sensor dataset
+  #' @param tagged_individual_prefix string identifying what columns belong to the tagged_individual dataset
+  #' @returns TRUE or FALSE
+  #' @export
+  # @formatter:on
   add_tagged_individuals = function(df,
                                     individual_prefix,
                                     tag_prefix,
                                     sensor_prefix,
                                     tagged_individual_prefix,
-                                    field_names,
+                                    field_names = c(
+                                      "individual_data",
+                                      "tag_data",
+                                      "sensors_data",
+                                      "tagged_individual_data"
+                                    ),
                                     end_point = "tagged_individuals/") {
     # Check NA fields
     not_na_fields <- c(
@@ -175,6 +194,14 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     logger::log_info("--->Finished")
     return(ret$http_resp)
   },
+  # @formatter:off
+  #' @description
+  #' Get all sensor types currently in the database
+  #'
+  #' @param end_point string with the name of the end point being queried.
+  #' @returns a dataframe with the sought information.
+  #' @export
+  # @formatter:on
   get_sensor_types = function(end_point = "sensortypes/") {
     logger::log_info("Fetching all sensor types from the api... This may take a few seconds")
     iim_api <- IIMApiClient$new(self$api_url)
@@ -186,7 +213,16 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     logger::log_info("--->Finished")
     return(ret)
   },
-  get_tagged_individuals = function(end_point = "tagged_individuals/") {
+  # @formatter:off
+  #' @description
+  #' Get all tagged individuals from the database. This operation may take a few seconds.
+  #'
+  #' @param end_point string with the name of the end point being queried.
+  #' @param tagged_individual_fields list of sections and fields per section to be retrieved.
+  #' @returns a dataframe with the sought information.
+  #' @export
+  # @formatter:on
+  get_tagged_individuals = function(end_point, tagged_individual_fields = TAGGED_INDVIDUAL_FIELDS) {
     logger::log_info("Fetching all tagged individuals from the api... This may take a few seconds")
     iim_api <- IIMApiClient$new(self$api_url)
     ret <- iim_api$get_from_api(end_point)
