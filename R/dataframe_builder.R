@@ -2,7 +2,7 @@ ListsToDataFrame <- R6::R6Class("ListsToDataFrame", public = list( # nolint
 
   # @formatter:off
   #' @description
-  #' Build a dataframe of results of the nested lists returned from the API.
+  #' Build a dataframe of results off the nested lists that was returned from the API.
   #'
   #' @param data nested list where each root level element represents an individual
   #' @returns a dataframe where each individual may be mapped across multiple rows due to its tag having
@@ -50,9 +50,18 @@ ListsToDataFrame <- R6::R6Class("ListsToDataFrame", public = list( # nolint
       data_ <- private$null_to_na(data[[x]])
       fields <- field_structure[[x]]
       df <- private$build_single_row_df(data_, fields)
+
+      if (x %in% c("tagged_individual", "tag")) { # Rename ids for tags and tagged_individual
+        df <- df %>%
+          dplyr::rename(!!paste0(x, "_id") := id)
+      } else {
+        df <- df %>%
+          dplyr::rename(ind_integer_id = id)
+      }
       df$fake_id <- 1
       return(df)
-    }) %>% purrr::reduce(dplyr::full_join, by = "fake_id")
+    }) %>%
+      purrr::reduce(dplyr::full_join, by = "fake_id")
     df <- dplyr::full_join(df_sensors, df_rest, by = "fake_id") %>% dplyr::select(-fake_id)
   },
   null_to_na = function(data) {
