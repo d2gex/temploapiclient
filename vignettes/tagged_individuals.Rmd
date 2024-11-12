@@ -143,6 +143,7 @@ Likewise we need to build the data for each individual which fields are as follo
 5. `total_length`
 
 ```{r individual_dataframe_buildup}
+options(width = 600)
 individual_prefix <- "ind_"
 # Again, we build three random alphanumeric ids for shwocasing purposes
 individual_ids <- paste0("MOVE-RUN-", c(rep("fane-01", 2), "raj-01"))
@@ -184,6 +185,7 @@ datasets[[4]]
 ### Merge all datasets into a single dataframe
 Last and before sending the details to the API we need to merge all datasets.
 ```{r dataset_merging}
+options(width = 600)
 tagged_individual_df <- datasets %>%
   purrr::reduce(dplyr::full_join, by = "merged_id") %>%
   dplyr::select(-merged_id)
@@ -192,7 +194,7 @@ tagged_individual_df %>%
   assertr::verify(nrow(.) == 3) %>%
   assertr::verify(!"merged_id" %in% names(.))
 ```
-### Send all details to the API.
+## Send all details to the API.
 We are ready to send all the details to the API,
 ```{r dataset_API_sending, eval = FALSE}
 ret <- templo_client$add_tagged_individuals(
@@ -206,8 +208,69 @@ ret <- templo_client$add_tagged_individuals(
 ... But we need to ensure that the records were actually inserted.
 
 ```{r dataset_API_sending_checkup}
+options(width = 600)
 api_data <- templo_client$get_tagged_individuals(end_point = "tagged_individuals/")
 api_data %>%
   dplyr::filter(stringr::str_detect(serial_number, "vignette")) %>%
   assertr::verify(nrow(.) == 3)
+```
+## Delete an individual or tag
+There may be sometimes where one may have associated the wrong individual to a tag, or simply the information of a
+sensor is wrong. The API is equipped with individual methods that let a user update certain information at specific
+tables to fix this issue. However, this is a complex operation that requires familiarisation with the relationship
+among tables. For now, whenever a situation of such nature appears, the process to fix it consist in a) deleting the
+records concerning that individual or tag and b) re-inserting again as we did earlier on. This section only shows how
+to accomplish the deletion operation, which needs to be performed following a strict order of operations as shown below:
+
+1. Delete the linked record in `tagged_individual` table by using the `tagged_individual_id` field
+2. Delete sensor part from `sensors` table by using the `sensor_id` field
+3. Delete the tag part from `tags` table by using the `tags_id` field
+4. Lastly delete the individual from `individuals` table by using the `individual_id` field
+
+Once the four operations above are completed, we can repeat the process to insert a tagged individual as shown before. For showcasing
+purposes, we will delete the **Raja undulata** individual we inserted before.
+
+Please notice the following:
+
+1. All chunks below have been tagged with `eval=FALSE` to avoid the vignette failing again, so that means that they were run only once and never again. Bear this in mind when running this vignette
+2. The ids used for the record deletion were based on a previous insertion. Though the sections below show the correct and actual record ids, they were updated manually to make the vignette consistent
+
+### Delete tagged_individual record
+```{r delete_record_tagged_individual, eval = FALSE}
+ret <- templo_client$delete_single_record(end_point = "tagged_individuals/", data = list(
+  tagged_individual_id = 394 # id obtained from earlier section's dataframe
+))
+ret
+```
+
+### Delete sensor record
+```{r delete_record_sensor, eval = FALSE}
+ret <- templo_client$delete_single_record(end_point = "sensors/", data = list(
+  sensor_id = 11765 # id obtained from earlier section's dataframe
+))
+ret
+```
+### Delete tag record
+```{r delete_record_tag, eval = FALSE}
+ret <- templo_client$delete_single_record(end_point = "tags/", data = list(
+  tag_id = 393 # id obtained from earlier section's dataframe
+))
+ret
+```
+### Delete individual record
+Notice that although the field used to delete a record in the `individuals` table is `individual_id`, the value that needs
+to be passed on is the integer one and not the unique string that identifies the individual within the table. This is
+caused by a disagreement in nomenclature.
+```{r delete_record_individual, eval = FALSE}
+ret <- templo_client$delete_single_record(end_point = "individuals/", data = list(
+  individual_id = 331 # id obtained from earlier section's dataframe
+))
+ret
+```
+
+```{r dataset_multiple_record_deletion_checkup, eval = FALSE}
+api_data <- templo_client$get_tagged_individuals(end_point = "tagged_individuals/")
+api_data %>%
+  dplyr::filter(stringr::str_detect(serial_number, "vignette")) %>%
+  assertr::verify(nrow(.) == 2)
 ```
