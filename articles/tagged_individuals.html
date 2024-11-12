@@ -118,13 +118,13 @@ duplicated in any way across, for example, two records.</p>
 successfully.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"species/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:56] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:57] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:44] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:45] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">common_name</span> <span class="op">==</span> <span class="st">"Faneca"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># It will halt the execution and print an error if such record does not exist</span></span>
-<span><span class="co">#&gt;   common_name id    scientific_name fao</span></span>
-<span><span class="co">#&gt; 1      Faneca 13 Trisopterus luscus  NA</span></span></code></pre></div>
+<span><span class="co">#&gt;   common_name    scientific_name id fao</span></span>
+<span><span class="co">#&gt; 1      Faneca Trisopterus luscus 13  NA</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create-sensor-type">Create sensor type<a class="anchor" aria-label="anchor" href="#create-sensor-type"></a>
@@ -138,20 +138,20 @@ turn, this to an individual.</p>
 such as PRESSURE, TEMPERATURE or DEPTH.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:57] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:57] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:45] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:45] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span></span>
-<span><span class="co">#&gt;    id    type_name</span></span>
-<span><span class="co">#&gt; 1   4     ACTIVITY</span></span>
-<span><span class="co">#&gt; 2   5 CONDUCTIVITY</span></span>
-<span><span class="co">#&gt; 3   1        DEPTH</span></span>
-<span><span class="co">#&gt; 4   6    MORTALITY</span></span>
-<span><span class="co">#&gt; 5  17        NUEVO</span></span>
-<span><span class="co">#&gt; 6  38     PRESSURE</span></span>
-<span><span class="co">#&gt; 7  39     SALINITY</span></span>
-<span><span class="co">#&gt; 8   7       string</span></span>
-<span><span class="co">#&gt; 9   3  TEMPERATURE</span></span>
-<span><span class="co">#&gt; 10  2         TILT</span></span></code></pre></div>
+<span><span class="co">#&gt;       type_name id</span></span>
+<span><span class="co">#&gt; 1      ACTIVITY  4</span></span>
+<span><span class="co">#&gt; 2  CONDUCTIVITY  5</span></span>
+<span><span class="co">#&gt; 3         DEPTH  1</span></span>
+<span><span class="co">#&gt; 4     MORTALITY  6</span></span>
+<span><span class="co">#&gt; 5         NUEVO 17</span></span>
+<span><span class="co">#&gt; 6      PRESSURE 38</span></span>
+<span><span class="co">#&gt; 7      SALINITY 39</span></span>
+<span><span class="co">#&gt; 8        string  7</span></span>
+<span><span class="co">#&gt; 9   TEMPERATURE  3</span></span>
+<span><span class="co">#&gt; 10         TILT  2</span></span></code></pre></div>
 <p>Let’s assume that we wanted to add another one to measure salinity.
 As for species this would be as:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -162,8 +162,8 @@ As for species this would be as:</p>
 <p>We check up that the record has been sent successfully.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_dataframe_end_point</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensortypes/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:57] Fetching data from api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:57] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:45] Fetching data from api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:45] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type_name</span> <span class="op">==</span> <span class="st">"SALINITY"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -264,7 +264,8 @@ are as follows: 1. <code>individual_id</code> 2.
 <code>scientific_name</code> 3. <code>common_name</code> 4.
 <code>sex</code> 5. <code>total_length</code></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">individual_prefix</span> <span class="op">&lt;-</span> <span class="st">"ind_"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span><span class="va">individual_prefix</span> <span class="op">&lt;-</span> <span class="st">"ind_"</span></span>
 <span><span class="co"># Again, we build three random alphanumeric ids for shwocasing purposes</span></span>
 <span><span class="va">individual_ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"MOVE-RUN-"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"fane-01"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">"raj-01"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">scientific_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Trisopterus luscus"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="st">"Raja undulata"</span><span class="op">)</span></span>
@@ -280,14 +281,10 @@ are as follows: 1. <code>individual_id</code> 2.
 <span>    <span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">individual_prefix</span>, <span class="st">"total_length"</span><span class="op">)</span> <span class="op">:=</span> <span class="va">total_lengths</span>,</span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">datasets</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   merged_id ind_individual_id ind_scientific_name ind_common_name ind_sex</span></span>
-<span><span class="co">#&gt; 1         1  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1</span></span>
-<span><span class="co">#&gt; 2         2  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1</span></span>
-<span><span class="co">#&gt; 3         3   MOVE-RUN-raj-01       Raja undulata    Undulate ray       2</span></span>
-<span><span class="co">#&gt;   ind_total_length</span></span>
-<span><span class="co">#&gt; 1               35</span></span>
-<span><span class="co">#&gt; 2               35</span></span>
-<span><span class="co">#&gt; 3               80</span></span></code></pre></div>
+<span><span class="co">#&gt;   merged_id ind_individual_id ind_scientific_name ind_common_name ind_sex ind_total_length</span></span>
+<span><span class="co">#&gt; 1         1  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1               35</span></span>
+<span><span class="co">#&gt; 2         2  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1               35</span></span>
+<span><span class="co">#&gt; 3         3   MOVE-RUN-raj-01       Raja undulata    Undulate ray       2               80</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="built-linking-dataframe">Built linking dataframe<a class="anchor" aria-label="anchor" href="#built-linking-dataframe"></a>
@@ -311,14 +308,10 @@ i.e, 2024-11-04 17:35:35</p>
 <span>    <span class="op">!</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">tag_individual_prefix</span>, <span class="st">"tagged_date"</span><span class="op">)</span> <span class="op">:=</span> <span class="va">tagged_date</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">datasets</span><span class="op">[[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;   merged_id tagged_individual_is_internal tagged_individual_is_active</span></span>
-<span><span class="co">#&gt; 1         1                          TRUE                        TRUE</span></span>
-<span><span class="co">#&gt; 2         2                          TRUE                        TRUE</span></span>
-<span><span class="co">#&gt; 3         3                         FALSE                        TRUE</span></span>
-<span><span class="co">#&gt;   tagged_individual_tagged_date</span></span>
-<span><span class="co">#&gt; 1           2024-11-11 12:02:00</span></span>
-<span><span class="co">#&gt; 2           2024-11-11 12:02:00</span></span>
-<span><span class="co">#&gt; 3           2024-11-11 13:01:17</span></span></code></pre></div>
+<span><span class="co">#&gt;   merged_id tagged_individual_is_internal tagged_individual_is_active tagged_individual_tagged_date</span></span>
+<span><span class="co">#&gt; 1         1                          TRUE                        TRUE           2024-11-11 12:02:00</span></span>
+<span><span class="co">#&gt; 2         2                          TRUE                        TRUE           2024-11-11 12:02:00</span></span>
+<span><span class="co">#&gt; 3         3                         FALSE                        TRUE           2024-11-11 13:01:17</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="merge-all-datasets-into-a-single-dataframe">Merge all datasets into a single dataframe<a class="anchor" aria-label="anchor" href="#merge-all-datasets-into-a-single-dataframe"></a>
@@ -326,33 +319,23 @@ i.e, 2024-11-04 17:35:35</p>
 <p>Last and before sending the details to the API we need to merge all
 datasets.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tagged_individual_df</span> <span class="op">&lt;-</span> <span class="va">datasets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span><span class="va">tagged_individual_df</span> <span class="op">&lt;-</span> <span class="va">datasets</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/reduce.html" class="external-link">reduce</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="va"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span>, by <span class="op">=</span> <span class="st">"merged_id"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">merged_id</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tagged_individual_df</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="op">!</span><span class="st">"merged_id"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   sensor_id sensor_sensor tag_serial_number tag_frequency tag_comm_protocol</span></span>
-<span><span class="co">#&gt; 1     11744         DEPTH     vignette_90SU        69 kHz               Ops</span></span>
-<span><span class="co">#&gt; 2     11722      PRESSURE     vignette_90SU        69 kHz               Ops</span></span>
-<span><span class="co">#&gt; 3     11775      SALINITY     vignette_Hjls        69 kHz               Ops</span></span>
-<span><span class="co">#&gt;   ind_individual_id ind_scientific_name ind_common_name ind_sex</span></span>
-<span><span class="co">#&gt; 1  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1</span></span>
-<span><span class="co">#&gt; 2  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1</span></span>
-<span><span class="co">#&gt; 3   MOVE-RUN-raj-01       Raja undulata    Undulate ray       2</span></span>
-<span><span class="co">#&gt;   ind_total_length tagged_individual_is_internal tagged_individual_is_active</span></span>
-<span><span class="co">#&gt; 1               35                          TRUE                        TRUE</span></span>
-<span><span class="co">#&gt; 2               35                          TRUE                        TRUE</span></span>
-<span><span class="co">#&gt; 3               80                         FALSE                        TRUE</span></span>
-<span><span class="co">#&gt;   tagged_individual_tagged_date</span></span>
-<span><span class="co">#&gt; 1           2024-11-11 12:02:00</span></span>
-<span><span class="co">#&gt; 2           2024-11-11 12:02:00</span></span>
-<span><span class="co">#&gt; 3           2024-11-11 13:01:17</span></span></code></pre></div>
+<span><span class="co">#&gt;   sensor_id sensor_sensor tag_serial_number tag_frequency tag_comm_protocol ind_individual_id ind_scientific_name ind_common_name ind_sex ind_total_length tagged_individual_is_internal tagged_individual_is_active tagged_individual_tagged_date</span></span>
+<span><span class="co">#&gt; 1     11744         DEPTH     vignette_90SU        69 kHz               Ops  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1               35                          TRUE                        TRUE           2024-11-11 12:02:00</span></span>
+<span><span class="co">#&gt; 2     11722      PRESSURE     vignette_90SU        69 kHz               Ops  MOVE-RUN-fane-01  Trisopterus luscus          Faneca       1               35                          TRUE                        TRUE           2024-11-11 12:02:00</span></span>
+<span><span class="co">#&gt; 3     11775      SALINITY     vignette_Hjls        69 kHz               Ops   MOVE-RUN-raj-01       Raja undulata    Undulate ray       2               80                         FALSE                        TRUE           2024-11-11 13:01:17</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="send-all-details-to-the-api-">Send all details to the API.<a class="anchor" aria-label="anchor" href="#send-all-details-to-the-api-"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="send-all-details-to-the-api-">Send all details to the API.<a class="anchor" aria-label="anchor" href="#send-all-details-to-the-api-"></a>
+</h3>
 <p>We are ready to send all the details to the API,</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">add_tagged_individuals</span><span class="op">(</span></span>
@@ -364,23 +347,103 @@ datasets.</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>… But we need to ensure that the records were actually inserted.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:58] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:05:59] ---&gt; Converting results to dataframe...</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:06:01] Fetching all sensor types from the api... This may take a few seconds</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:06:01] ---&gt;Finished</span></span>
-<span><span class="co">#&gt; INFO [2024-11-11 16:06:01] ---&gt;Finished</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">600</span><span class="op">)</span></span>
+<span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:46] Fetching all tagged individuals from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:47] ---&gt; Converting results to dataframe...</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:50] Fetching all sensor types from the api... This may take a few seconds</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:50] ---&gt;Finished</span></span>
+<span><span class="co">#&gt; INFO [2024-11-12 07:35:50] ---&gt;Finished</span></span>
 <span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">serial_number</span>, <span class="st">"vignette"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   sensor_id is_internal is_active         tagged_date    individual_id weight</span></span>
-<span><span class="co">#&gt; 1     11722        TRUE      TRUE 2024-11-11T12:02:00 MOVE-RUN-fane-01     NA</span></span>
-<span><span class="co">#&gt; 2     11744        TRUE      TRUE 2024-11-11T12:02:00 MOVE-RUN-fane-01     NA</span></span>
-<span><span class="co">#&gt; 3     11775       FALSE      TRUE 2024-11-11T13:01:17  MOVE-RUN-raj-01     NA</span></span>
-<span><span class="co">#&gt;   sex total_length serial_number comm_protocol frequency sensor_type</span></span>
-<span><span class="co">#&gt; 1   1           35 vignette_90SU           Ops        69    PRESSURE</span></span>
-<span><span class="co">#&gt; 2   1           35 vignette_90SU           Ops        69       DEPTH</span></span>
-<span><span class="co">#&gt; 3   2           80 vignette_Hjls           Ops        69    SALINITY</span></span></code></pre></div>
+<span><span class="co">#&gt;   sensor_id tagged_individual_id is_internal is_active         tagged_date ind_integer_id    individual_id weight sex total_length tag_id serial_number comm_protocol frequency sensor_type</span></span>
+<span><span class="co">#&gt; 1     11722                  392        TRUE      TRUE 2024-11-11T12:02:00            321 MOVE-RUN-fane-01     NA   1           35    391 vignette_90SU           Ops        69    PRESSURE</span></span>
+<span><span class="co">#&gt; 2     11744                  392        TRUE      TRUE 2024-11-11T12:02:00            321 MOVE-RUN-fane-01     NA   1           35    391 vignette_90SU           Ops        69       DEPTH</span></span>
+<span><span class="co">#&gt; 3     11765                  394       FALSE      TRUE 2024-11-11T13:01:17            331  MOVE-RUN-raj-01     NA   2           80    393 vignette_SnRU           Ops        69    SALINITY</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="delete-an-individual-or-tag">Delete an individual or tag<a class="anchor" aria-label="anchor" href="#delete-an-individual-or-tag"></a>
+</h3>
+<p>There may be sometimes where one may have associated the wrong
+individual to a tag, or simply the information of a sensor is wrong. The
+API is equipped with individual methods that let a user update certain
+information at specific tables to fix this issue. However, this is a
+complex operation that requires familiarisation with the relationship
+among tables. For now, whenever a situation of such nature appears, the
+process to fix it consist in a) deleting the records concerning that
+individual or tag and b) re-inserting again as we did earlier on. This
+section only shows how to accomplish the deletion operation, which needs
+to be performed following a strict order of operations as shown
+below:</p>
+<ol style="list-style-type: decimal">
+<li>Delete the linked record in <code>tagged_individual</code> table by
+using the <code>tagged_individual_id</code> field</li>
+<li>Delete sensor part from <code>sensors</code> table by using the
+<code>sensor_id</code> field</li>
+<li>Delete the tag part from <code>tags</code> table by using the
+<code>tags_id</code> field</li>
+<li>Lastly delete the individual from <code>individuals</code> table by
+using the <code>individual_id</code> field</li>
+</ol>
+<p>Once the four operations above are completed, we can repeat the
+process to insert a tagged individual as shown before. For showcasing
+purposes, we will delete the <strong>Raja undulata</strong> individual
+we inserted before.</p>
+<p>Please notice the following:</p>
+<ol style="list-style-type: decimal">
+<li>All chunks below have been tagged with <code>eval=FALSE</code> to
+avoid the vignette failing again, so that means that they were run only
+once and never again. Bear this in mind when running this vignette</li>
+<li>The ids used for the record deletion were based on a previous
+insertion. Though the sections below show the correct and actual record
+ids, they were updated manually to make the vignette consistent</li>
+</ol>
+<div class="section level4">
+<h4 id="delete-tagged_individual-record">Delete tagged_individual record<a class="anchor" aria-label="anchor" href="#delete-tagged_individual-record"></a>
+</h4>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  tagged_individual_id <span class="op">=</span> <span class="fl">394</span> <span class="co"># id obtained from earlier section's dataframe</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ret</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="delete-sensor-record">Delete sensor record<a class="anchor" aria-label="anchor" href="#delete-sensor-record"></a>
+</h4>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"sensors/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  sensor_id <span class="op">=</span> <span class="fl">11765</span> <span class="co"># id obtained from earlier section's dataframe</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ret</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="delete-tag-record">Delete tag record<a class="anchor" aria-label="anchor" href="#delete-tag-record"></a>
+</h4>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tags/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  tag_id <span class="op">=</span> <span class="fl">393</span> <span class="co"># id obtained from earlier section's dataframe</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ret</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="delete-individual-record">Delete individual record<a class="anchor" aria-label="anchor" href="#delete-individual-record"></a>
+</h4>
+<p>Notice that although the field used to delete a record in the
+<code>individuals</code> table is <code>individual_id</code>, the value
+that needs to be passed on is the integer one and not the unique string
+that identifies the individual within the table. This is caused by a
+disagreement in nomenclature.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">ret</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">delete_single_record</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"individuals/"</span>, data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  individual_id <span class="op">=</span> <span class="fl">331</span> <span class="co"># id obtained from earlier section's dataframe</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ret</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">api_data</span> <span class="op">&lt;-</span> <span class="va">templo_client</span><span class="op">$</span><span class="fu">get_tagged_individuals</span><span class="op">(</span>end_point <span class="op">=</span> <span class="st">"tagged_individuals/"</span><span class="op">)</span></span>
+<span><span class="va">api_data</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html" class="external-link">str_detect</a></span><span class="op">(</span><span class="va">serial_number</span>, <span class="st">"vignette"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">assertr</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/assertr/reference/verify.html" class="external-link">verify</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
