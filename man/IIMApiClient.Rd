@@ -6,6 +6,24 @@
 \description{
 Provides the end-to-end queries required to update all details about the live acoustic telemetry system in place
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+
+\item{\code{headers}}{list of HTTP headers}
+
+\item{\code{token}}{string to authenticate against the API}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -21,10 +39,22 @@ Provides the end-to-end queries required to update all details about the live ac
 \if{html}{\out{<a id="method-IIMApiClient-new"></a>}}
 \if{latex}{\out{\hypertarget{method-IIMApiClient-new}{}}}
 \subsection{Method \code{new()}}{
+Initialise IIMApiClient
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$new(api_url)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$new(api_url, headers, token)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{headers}}{list of HTTP headers}
+
+\item{\code{token}}{string to authenticate against the API}
+
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-IIMApiClient-post_data_to_api"></a>}}
@@ -70,7 +100,7 @@ Delete a single record from the database through the API
 \subsection{Method \code{get_from_api()}}{
 Make a request to the API and return the data in a json object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$get_from_api(end_point)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{IIMApiClient$get_from_api(end_point, parameters = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

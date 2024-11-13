@@ -3,9 +3,24 @@
 #' @description
 #' API client to consume TEMPLO's API
 TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
+  # @formatter:off
+  #' @field base_url string containing the base url of the querying API (without the end_point) part
   api_url = NULL,
-  initialize = function(api_url) {
+  #' @field headers list of HTTP headers
+  headers = NULL,
+  #' @field token string to authenticate against the API
+  token = NULL,
+  #' @description
+  #' Initialise IIMApiClient
+  #'
+  #' @param base_url string containing the base url of the querying API (without the end_point) part
+  #' @param headers list of HTTP headers
+  #' @param token string to authenticate against the API
+  #' @export
+  initialize = function(api_url, headers, token) {
     self$api_url <- api_url
+    self$headers <- headers
+    self$token <- token
   },
   # @formatter:off
   #' @description
@@ -30,7 +45,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     # Send dataframe to API
     successful_insertions <- list()
     nested_list_builder <- NestedListBuilder$new()
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     for (i in seq_len(nrow(df))) {
       row <- df[i, ]
       scientific_name <- row$scientific_name
@@ -112,7 +127,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
     }
 
     nested_list_builder <- NestedListBuilder$new()
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     successful_insertions <- list()
 
     # Convert dataframe to list
@@ -166,7 +181,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   # @formatter:on
   add_single_record_and_fetch_id = function(end_point, data) {
     logger::log_info(paste("Sending data to ", end_point, "..."))
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$post_data_to_api(data, end_point)
     if (isFALSE(ret)) {
       logger::log_error(paste("Data could not be send"))
@@ -185,7 +200,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   # @formatter:on
   get_sensor_types = function(end_point = "sensortypes/") {
     logger::log_info("Fetching all sensor types from the api... This may take a few seconds")
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$get_from_api_as_dataframe(end_point)
     if (!isFALSE(ret)) {
       ret <- ret$http_resp %>%
@@ -207,7 +222,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   # @formatter:on
   get_tagged_individuals = function(end_point, tagged_individual_fields = TAGGED_INDVIDUAL_FIELDS) {
     logger::log_info("Fetching all tagged individuals from the api... This may take a few seconds")
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$get_from_api(end_point)
     if (!isFALSE(ret)) {
       logger::log_info("---> Converting results to dataframe...")
@@ -252,7 +267,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
       "Fetching environmental readings from ",
       from_date, "to", to_date, "... This may take a few seconds"
     ))
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$get_from_api_as_dataframe(end_point, list(
       from_date = from_date,
       to_date = to_date
@@ -275,7 +290,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   # @formatter:on
   get_dataframe_end_point = function(end_point, parameters = NULL) {
     logger::log_info(paste("Fetching data from api... This may take a few seconds"))
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$get_from_api_as_dataframe(end_point, parameters)
     if (!isFALSE(ret)) {
       ret <- ret$http_resp
@@ -294,7 +309,7 @@ TemploApiClient <- R6::R6Class("TemploApiClient", public = list( # nolint
   # @formatter:on
   delete_single_record = function(end_point, data) {
     logger::log_info(paste("Deleting data from ", end_point, "..."))
-    iim_api <- IIMApiClient$new(self$api_url)
+    iim_api <- IIMApiClient$new(self$api_url, self$headers, self$token)
     ret <- iim_api$delete_data_from_api(data, end_point)
     if (isFALSE(ret)) {
       logger::log_error(paste("Data could not be send"))

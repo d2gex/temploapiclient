@@ -26,6 +26,7 @@ httpeasyrest
 httr
 iim
 IIMApiClient
+Initialise
 io
 json
 jsonlite

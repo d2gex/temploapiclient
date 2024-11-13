@@ -334,14 +334,16 @@
       "RemoteUsername": "d2gex",
       "RemoteRepo": "httpeasyrest",
       "RemoteRef": "main",
-      "RemoteSha": "4b64e1064859bf6bcb721fdc8a56089682c21928",
+      "RemoteSha": "f730bbe96238100b64bbd92fcaa81a468ee733fd",
       "Requirements": [
         "R6",
         "dplyr",
         "httr2",
-        "logger"
+        "logger",
+        "stringi",
+        "testit"
       ],
-      "Hash": "81a50c5315f5c4663713186c25242531"
+      "Hash": "ab9ff545cad443e3a506f49bd7948814"
     },
     "httr2": {
       "Package": "httr2",
@@ -701,6 +703,13 @@
         "lifecycle"
       ],
       "Hash": "213b6b8ed5afbf934843e6c3b090d418"
+    },
+    "testit": {
+      "Package": "testit",
+      "Version": "0.13",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "996a96428543889c9420e516f59b18ac"
     },
     "textshaping": {
       "Package": "textshaping",

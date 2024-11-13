@@ -25,9 +25,14 @@ project_folder <- dirname(getwd())
 path_to_env <- file.path(project_folder, ".env")
 readRenviron(path_to_env)
 api_base_url <- Sys.getenv("API_BASE_URL")
+api_headers <- list("Accept" = "application/json", "Content-type" = "application/json")
+api_auth_token <- Sys.getenv("AUTH_TOKEN")
+if (!length(api_auth_token)) {
+  api_auth_token <- NULL
+}
 ```
 ```{r instantiate_client}
-templo_client <- temploapiclient::TemploApiClient$new(api_base_url)
+templo_client <- temploapiclient::TemploApiClient$new(api_base_url, api_headers, api_auth_token)
 library("magrittr") # Make '%>%' available throughout the vignette
 ```
 # Initial Setup and Api Credentials

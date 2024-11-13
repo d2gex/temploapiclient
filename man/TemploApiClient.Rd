@@ -23,6 +23,24 @@ TRUE if successfully completed. Error message otherwise.
 \description{
 API client to consume TEMPLO's API
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+
+\item{\code{headers}}{list of HTTP headers}
+
+\item{\code{token}}{string to authenticate against the API}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -42,10 +60,22 @@ API client to consume TEMPLO's API
 \if{html}{\out{<a id="method-TemploApiClient-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TemploApiClient-new}{}}}
 \subsection{Method \code{new()}}{
+Initialise IIMApiClient
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$new(api_url)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TemploApiClient$new(api_url, headers, token)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{headers}}{list of HTTP headers}
+
+\item{\code{token}}{string to authenticate against the API}
+
+\item{\code{base_url}}{string containing the base url of the querying API (without the end_point) part}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TemploApiClient-add_species"></a>}}
