@@ -54,6 +54,30 @@
 <p>TRUE if successfully completed. Error message otherwise.</p>
     </div>
     <div class="section level2">
+    <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
+    <p></p><div class="r6-fields"><dl><dt><code>base_url</code></dt>
+<dd><p>string containing the base url of the querying API (without the end_point) part</p></dd>
+
+
+<dt><code>headers</code></dt>
+<dd><p>list of HTTP headers</p></dd>
+
+
+<dt><code>token</code></dt>
+<dd><p>string to authenticate against the API</p></dd>
+
+
+</dl><p></p></div>
+    </div>
+    <div class="section level2">
+    <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
+    <p></p><div class="r6-active-bindings"><dl><dt><code>base_url</code></dt>
+<dd><p>string containing the base url of the querying API (without the end_point) part</p></dd>
+
+
+</dl><p></p></div>
+    </div>
+    <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
@@ -71,12 +95,27 @@
 <li><p><a href="#method-TemploApiClient-clone"><code>TemploApiClient$clone()</code></a></p></li>
 </ul></div><p></p><hr><a id="method-TemploApiClient-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
-
-<div class="section">
+<p>Initialise IIMApiClient</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/TemploApiClient.html">TemploApiClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">api_url</span><span class="op">)</span></span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/TemploApiClient.html">TemploApiClient</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">api_url</span>, <span class="va">headers</span>, <span class="va">token</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+<div class="section">
+<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>headers</code></dt>
+<dd><p>list of HTTP headers</p></dd>
+
+
+<dt><code>token</code></dt>
+<dd><p>string to authenticate against the API</p></dd>
+
+
+<dt><code>base_url</code></dt>
+<dd><p>string containing the base url of the querying API (without the end_point) part</p></dd>
+
+
+</dl><p></p></div>
+</div>
 
 </div><p></p><hr><a id="method-TemploApiClient-add_species"></a><div class="section">
 <h3 id="method-add-species-">Method <code>add_species()</code><a class="anchor" aria-label="anchor" href="#method-add-species-"></a></h3>
@@ -88,7 +127,7 @@ sucesfully inserted will be listed. In case either none or all were inserted, th
 </div>
 
 <div class="section">
-<h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
+<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -116,7 +155,7 @@ be listed. In case either none or all were inserted, the final output will repor
 </div>
 
 <div class="section">
-<h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>df</code></dt>
 <dd><p>dataframe with pontetial multiple-row individuals (if multiple sensors); one row otherwise.</p></dd>
 
@@ -156,7 +195,7 @@ be listed. In case either none or all were inserted, the final output will repor
 </div>
 
 <div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -176,7 +215,7 @@ be listed. In case either none or all were inserted, the final output will repor
 </div>
 
 <div class="section">
-<h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -197,7 +236,7 @@ final result is a merge between both retrieved datasets.</p><div class="section"
 </div>
 
 <div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
+<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -221,7 +260,7 @@ final result is a merge between both retrieved datasets.</p><div class="section"
 </div>
 
 <div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -245,7 +284,7 @@ final result is a merge between both retrieved datasets.</p><div class="section"
 </div>
 
 <div class="section">
-<h4 id="arguments-6">Arguments<a class="anchor" aria-label="anchor" href="#arguments-6"></a></h4>
+<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -265,7 +304,7 @@ final result is a merge between both retrieved datasets.</p><div class="section"
 </div>
 
 <div class="section">
-<h4 id="arguments-7">Arguments<a class="anchor" aria-label="anchor" href="#arguments-7"></a></h4>
+<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>end_point</code></dt>
 <dd><p>string with the name of the end point being queried.</p></dd>
 
@@ -285,7 +324,7 @@ final result is a merge between both retrieved datasets.</p><div class="section"
 </div>
 
 <div class="section">
-<h4 id="arguments-8">Arguments<a class="anchor" aria-label="anchor" href="#arguments-8"></a></h4>
+<h4 id="arguments-9">Arguments<a class="anchor" aria-label="anchor" href="#arguments-9"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
