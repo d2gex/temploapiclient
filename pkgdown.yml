@@ -5,7 +5,7 @@ articles:
   environmental_readings_and_detections: environmental_readings_and_detections.html
   station_and_receptors: station_and_receptors.html
   tagged_individuals: tagged_individuals.html
-last_built: 2024-11-13T18:25Z
+last_built: 2024-11-14T17:08Z
 urls:
   reference: https://d2gex.github.io/temploapiclient/reference
   article: https://d2gex.github.io/temploapiclient/articles
