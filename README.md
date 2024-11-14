@@ -11,9 +11,11 @@ the deployed acoustic telemetry network. In addition to tracking detections, the
 as depth, pressure, and temperature.
 
 # High-level system design
+Currently, all clients sending data to the servers from the ocean are using the same MQTT THELMA gateway. As shown in
+the figure below, the bottom branch of the `CETMAR SETTING UP` section is actually connected to `THELMA MQTT Broker`, 
+while the top branch is not being used.
 
 ![Templo's high level design](https://github.com/d2gex/temploapiclient/blob/main/inst/images/acoustic_telemetry_system_design.png?raw=true "Templo's high level design")
-
 
 # Entity Relationship Diagram
 The entity-relationship model of the underlying database over which the API has been built is shown below.
