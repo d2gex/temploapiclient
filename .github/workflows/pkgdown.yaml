@@ -41,6 +41,7 @@ jobs:
         run: |
           touch .env
           echo API_BASE_URL=${{ secrets.API_BASE_URL }} >> .env
+          echo AUTH_TOKEN=${{ secrets.AUTH_TOKEN }} >> .env
 
       - name: Build site
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
